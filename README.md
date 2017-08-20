@@ -1,4 +1,4 @@
-# [UDEA-PS] Programa 2 - Pruebas_PS1! [![Build Status](https://travis-ci.org/yoinergomez/Pruebas_PS0.svg?branch=master)](https://travis-ci.org/yoinergomez/Pruebas_PS0) [![Coverage Status](https://coveralls.io/repo/github/yoinergomez/Pruebas_PS0/badge.svg?branch=master)](https://coveralls.io/github/yoinergomez/Pruebas_PS0?branch=master)
+# [UDEA-PS] Programa 2 - Pruebas_PS1!
 
 Aplicación que cuenta la cantidad de lineas de código que tiene programa por medio de cada una de sus clases. 
 
@@ -7,7 +7,7 @@ Jhonatan Alexánder Orozco Blandón.
 Frank Alexis Castrillón Giraldo.  
 Yoiner Esteban Gómez Ayala.
 
-## Metodología [![BackLog](https://trello.com/b/YSHHBdhP/pruebasps1)
+## Metodología [![BackLog]](https://trello.com/b/YSHHBdhP/pruebasps1)
 **- Análisis:** Los miembros del equipo comprendieron el documento donde se describía el problemay sus requerimientos, también se definieron las tecnologías, IDE de desarrollo, lenguaje de programación y tareas para realizar por cada integrante. 
 
 **- Planeación:** Se asignaron y estimaron las tareas por medio de la técnica de _planning poker_, además para lograr una mayor claridad se describieron las tareas que presentaban ambigüedad o no tenían un alcance bien definido.
