@@ -6,7 +6,8 @@
 package co.edu.udea.pruebas_ps1.estadistica;
 
 /**
- * Es la clase encargada de verificar si una sentencia es una clase o un método
+ * Almacena la cantidad de linea de código, cantidad de métodos y el nombre 
+ * de una clase
  * @author Frank Castrillón - castrillonfrank114@gmail.com
  * @date 2017/08/19
  * @version v1
