@@ -8,7 +8,9 @@ Frank Alexis Castrillón Giraldo.
 Yoiner Esteban Gómez Ayala.
 
 ## Metodología [![BackLog]](https://trello.com/b/YSHHBdhP/pruebasps1)
-**- Análisis:** Los miembros del equipo comprendieron el documento donde se describía el problemay sus requerimientos, también se definieron las tecnologías, IDE de desarrollo, lenguaje de programación y tareas para realizar por cada integrante. 
+**- Análisis:** Los miembros del equipo comprendieron el documento donde se describía el problema y sus requerimientos, también se definieron las tecnologías, IDE de desarrollo, lenguaje de programación y tareas para realizar por cada integrante.
+              
+Posteriormente, se establece un estandar de códificación que nos permite abordar de una manera correcta el desarrollo de software y en ese mismo proceso definir el estandar de conteo que debera tener el cuenta el Programa 2 para calcular el total de lineas código.
 
 **- Planeación:** Se asignaron y estimaron las tareas por medio de la técnica de _planning poker_, además para lograr una mayor claridad se describieron las tareas que presentaban ambigüedad o no tenían un alcance bien definido.
 
