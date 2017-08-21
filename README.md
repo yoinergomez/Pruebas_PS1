@@ -1,4 +1,4 @@
-# [UDEA-PS] Programa 2 - Pruebas_PS1!
+# [UDEA-PS] Programa 2 [![Build Status](https://travis-ci.org/yoinergomez/Pruebas_PS1.svg?branch=master)](https://travis-ci.org/yoinergomez/Pruebas_PS1) [![Coverage Status](https://coveralls.io/repos/github/yoinergomez/Pruebas_PS1/badge.svg?branch=master)](https://coveralls.io/github/yoinergomez/Pruebas_PS1?branch=master) [![trello](https://img.shields.io/badge/trello-Pruebas__PS1-blue.svg)](https://trello.com/b/YSHHBdhP/pruebasps1)
 
 Aplicación que cuenta la cantidad de lineas de código que tiene programa por medio de cada una de sus clases. 
 
@@ -16,7 +16,7 @@ Posteriormente, se establece un estandar de códificación que nos permite abord
 
 **- Implementación:** El equipo implemento la metodología de desarrollo TDD y en base a esto se resolvieron las tareas estipuladas en las etapas anteriores. 
 
-**- Verificación:** Se comprobó la ejecución del programa y el nivel de cobertura del código fuera mayor o igual al 9x%.
+**- Verificación:** Se comprobó la ejecución del programa y el nivel de cobertura del código fuera mayor o igual al 90%.
 
 ## Tecnologías usadas
 - Java v1.8.
