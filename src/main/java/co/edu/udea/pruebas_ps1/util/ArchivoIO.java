@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -19,13 +20,17 @@ import org.apache.commons.io.FilenameUtils;
 public class ArchivoIO {
 
     /**
-     * Encuentra el archivo dependiendo la ruta, además de validar de que el 
+     * Encuentra el archivo dependiendo la ruta, además de validar de que el
      * archivo cumpla con la extensión .txt
-     * @param rutaArchivo La ruta del archivo 
+     *
+     * @param rutaArchivo La ruta del archivo
      * @return El archivo que se encontró de acuerdo a la ruta.
      * @throws FileNotFoundException
-     * @throws ValidacionPS1 
+     * @throws ValidacionPS1
      */
+    
+    private int numeroLineas;
+    
     public File encontrarArchivo(String rutaArchivo) throws FileNotFoundException,
             ValidacionPS1 {
         String extArchivo;
@@ -39,6 +44,22 @@ public class ArchivoIO {
         }
 
         return archivo;
+    }
+
+    public String leerArchivo(String rutaArchivo) throws FileNotFoundException, 
+            ValidacionPS1,IOException {
+        String cadena;
+        String textoArchivo="";
+        numeroLineas=0;
+        File archivo=encontrarArchivo(rutaArchivo);
+        FileReader f = new FileReader(archivo);
+        BufferedReader b = new BufferedReader(f);
+        while ((cadena = b.readLine()) != null) {
+            textoArchivo=textoArchivo.concat(cadena);
+            numeroLineas++;
+        }
+        b.close();
+        return textoArchivo;
     }
 
 }
