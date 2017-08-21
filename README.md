@@ -7,7 +7,7 @@ Jhonatan Alexánder Orozco Blandón.
 Frank Alexis Castrillón Giraldo.  
 Yoiner Esteban Gómez Ayala.
 
-## Metodología [![BackLog]](https://trello.com/b/YSHHBdhP/pruebasps1)
+## Metodología [![trello](https://img.shields.io/badge/trello-Pruebas__PS1-blue.svg)](https://trello.com/b/YSHHBdhP/pruebasps1)
 **- Análisis:** Los miembros del equipo comprendieron el documento donde se describía el problema y sus requerimientos, también se definieron las tecnologías, IDE de desarrollo, lenguaje de programación y tareas para realizar por cada integrante.
               
 Posteriormente, se establece un estandar de códificación que nos permite abordar de una manera correcta el desarrollo de software y en ese mismo proceso definir el estandar de conteo que debera tener el cuenta el Programa 2 para calcular el total de lineas código.
