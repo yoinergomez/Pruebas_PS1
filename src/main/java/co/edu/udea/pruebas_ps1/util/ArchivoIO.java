@@ -18,17 +18,18 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class ArchivoIO {
 
-    private File archivo;
-
-    public File getArchivo() {
-        return archivo;
-    }
-
-    
-    public File encontrarArchivo(String rutaArchivo)throws FileNotFoundException, 
+    /**
+     * Encuentra el archivo dependiendo la ruta, además de validar de que el 
+     * archivo cumpla con la extensión .txt
+     * @param rutaArchivo La ruta del archivo 
+     * @return El archivo que se encontró de acuerdo a la ruta.
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1 
+     */
+    public File encontrarArchivo(String rutaArchivo) throws FileNotFoundException,
             ValidacionPS1 {
         String extArchivo;
-        archivo = new File(rutaArchivo);
+        File archivo = new File(rutaArchivo);
         if (!archivo.exists()) {
             throw new FileNotFoundException("El archivo no se puede abrir");
         }

@@ -9,6 +9,7 @@ import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -72,5 +73,33 @@ public class ArchivoIOTest {
         String ruta = "esteArchivoNoExiste.xls";
          File f =archivoIO.encontrarArchivo(ruta);
     }
+    
+    /**
+     * Prueba para abrir un archivo con la extensión .txt
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1
+     * @throws URISyntaxException 
+     */
+    @Test
+    public void testAbrirArchivotxt() throws FileNotFoundException,
+            ValidacionPS1, URISyntaxException {
+        String path = corregirPath("prueba.txt");
+        File f = archivoIO.encontrarArchivo(path);
+        String ext = FilenameUtils.getExtension(f.getName());
+        assertArrayEquals("txt".toCharArray(), ext.toCharArray());
+    }
 
+    /**
+     * Prueba para abrir un archivo distinto a .txt. Se espera una excepción
+     * cuando esto ocurra.
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1
+     * @throws java.net.URISyntaxException
+     */
+    @Test(expected = ValidacionPS1.class)
+    public void testAbrirArchivoDistintotAtxt() throws FileNotFoundException,
+            ValidacionPS1, URISyntaxException {
+        String path = corregirPath("prueba.docx");
+        archivoIO.encontrarArchivo(path);
+    }
 }
