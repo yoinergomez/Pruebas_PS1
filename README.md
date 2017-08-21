@@ -1,6 +1,6 @@
 # [UDEA-PS] Programa 2 [![Build Status](https://travis-ci.org/yoinergomez/Pruebas_PS1.svg?branch=master)](https://travis-ci.org/yoinergomez/Pruebas_PS1) [![Coverage Status](https://coveralls.io/repos/github/yoinergomez/Pruebas_PS1/badge.svg?branch=master)](https://coveralls.io/github/yoinergomez/Pruebas_PS1?branch=master) [![trello](https://img.shields.io/badge/trello-Pruebas__PS1-blue.svg)](https://trello.com/b/YSHHBdhP/pruebasps1)
 
-Aplicación que cuenta la cantidad de lineas de código que tiene programa por medio de cada una de sus clases. 
+Aplicación que cuenta la cantidad de líneas de código teniendo en cuenta un [estándar de codificación. (Ver estándar)](https://github.com/yoinergomez/Pruebas_PS1/blob/master/doc/Est%C3%A1ndar%20de%20conteo%20programa%20java.docx) 
 
 ## Desarrolladores
 Jhonatan Alexánder Orozco Blandón.  
@@ -19,9 +19,9 @@ Posteriormente, se establece un estandar de códificación que nos permite abord
 **- Verificación:** Se comprobó la ejecución del programa y el nivel de cobertura del código fuera mayor o igual al 90%.
 
 ## Tecnologías usadas
-- Java v1.8.
-- NetBeans v8.2.
-- Maven v3.0.5.  
+- Java v1.8
+- NetBeans v8.2
+- Maven v3.0.5  
   
 <div align="center">
     <img src="" >
