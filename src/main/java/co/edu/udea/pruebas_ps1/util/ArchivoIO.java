@@ -40,5 +40,9 @@ public class ArchivoIO {
 
         return archivo;
     }
+    
+    public void cargarInstruccion(String bloqueTexto) {
+        
+    }
 
 }

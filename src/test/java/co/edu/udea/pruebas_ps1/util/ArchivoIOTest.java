@@ -11,10 +11,7 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -34,9 +31,10 @@ public class ArchivoIOTest {
     /**
      * Método para obtener el la ruta de recurso que se quiere encontrar,
      * dependiendo del sistema operativo donde se despliegue el programa.
+     *
      * @param nombreRecurso El nombre del recurso
      * @return La ruta modificada de acuerdo al sistem operativo
-     * @throws URISyntaxException 
+     * @throws URISyntaxException
      */
     public String corregirPath(String nombreRecurso) throws URISyntaxException {
         String path = this.getClass().getClassLoader().getResource(nombreRecurso)
@@ -49,36 +47,39 @@ public class ArchivoIOTest {
 
     /**
      * Prueba para abrir un archivo existente.
+     *
      * @throws URISyntaxException
      * @throws FileNotFoundException
-     * @throws ValidacionPS1 
+     * @throws ValidacionPS1
      */
     @Test
-    public void testArchivoExistente() throws URISyntaxException, 
+    public void testArchivoExistente() throws URISyntaxException,
             FileNotFoundException, ValidacionPS1 {
         String ruta = corregirPath("prueba.txt");
-        File f =archivoIO.encontrarArchivo(ruta);
+        File f = archivoIO.encontrarArchivo(ruta);
         assertTrue(f.exists());
     }
-    
+
     /**
      * Prueba para abrir un archivo inexistente.
+     *
      * @throws ValidacionPS1
      * @throws URISyntaxException
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
     @Test(expected = FileNotFoundException.class)
     public void testArchivoInexistente() throws
             ValidacionPS1, URISyntaxException, FileNotFoundException {
         String ruta = "esteArchivoNoExiste.xls";
-         File f =archivoIO.encontrarArchivo(ruta);
+        File f = archivoIO.encontrarArchivo(ruta);
     }
-    
+
     /**
      * Prueba para abrir un archivo con la extensión .txt
+     *
      * @throws FileNotFoundException
      * @throws ValidacionPS1
-     * @throws URISyntaxException 
+     * @throws URISyntaxException
      */
     @Test
     public void testAbrirArchivotxt() throws FileNotFoundException,
@@ -92,6 +93,7 @@ public class ArchivoIOTest {
     /**
      * Prueba para abrir un archivo distinto a .txt. Se espera una excepción
      * cuando esto ocurra.
+     *
      * @throws FileNotFoundException
      * @throws ValidacionPS1
      * @throws java.net.URISyntaxException
@@ -101,5 +103,20 @@ public class ArchivoIOTest {
             ValidacionPS1, URISyntaxException {
         String path = corregirPath("prueba.docx");
         archivoIO.encontrarArchivo(path);
+    }
+
+    /**
+     * Prueba para ignorar un comentario simple del método 'cargarInstruccion' 
+     *
+     * @author Yoiner Gómez - yoiner.gomez22@gmail.com
+     * @date 2017/08/11
+     * @version v1
+     */
+    @Test
+    public void testIgnorarLineaComentario() {
+        final String LINEA = "// Esto es un comentario";
+        archivoIO.cargarInstruccion(LINEA);
+        
+        
     }
 }
