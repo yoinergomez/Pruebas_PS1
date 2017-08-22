@@ -8,6 +8,7 @@ package co.edu.udea.pruebas_ps1.util;
 import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
@@ -37,12 +38,12 @@ public class ArchivoIOTest {
      * @throws URISyntaxException
      */
     public String corregirPath(String nombreRecurso) throws URISyntaxException {
-        String path = this.getClass().getClassLoader().getResource(nombreRecurso)
+        String ruta = this.getClass().getClassLoader().getResource(nombreRecurso)
                 .toURI().toString();
         if (SystemUtils.IS_OS_WINDOWS) {
-            return path.substring(6);
+            return ruta.substring(6);
         }
-        return path.substring(5);
+        return ruta.substring(5);
     }
 
     /**
@@ -84,8 +85,8 @@ public class ArchivoIOTest {
     @Test
     public void testAbrirArchivotxt() throws FileNotFoundException,
             ValidacionPS1, URISyntaxException {
-        String path = corregirPath("prueba.txt");
-        File f = archivoIO.encontrarArchivo(path);
+        String ruta = corregirPath("prueba.txt");
+        File f = archivoIO.encontrarArchivo(ruta);
         String ext = FilenameUtils.getExtension(f.getName());
         assertArrayEquals("txt".toCharArray(), ext.toCharArray());
     }
@@ -101,10 +102,59 @@ public class ArchivoIOTest {
     @Test(expected = ValidacionPS1.class)
     public void testAbrirArchivoDistintotAtxt() throws FileNotFoundException,
             ValidacionPS1, URISyntaxException {
-        String path = corregirPath("prueba.docx");
-        archivoIO.encontrarArchivo(path);
+        String ruta = corregirPath("prueba.docx");
+        archivoIO.encontrarArchivo(ruta);
     }
 
+    /**
+     * Prueba para leer laprimera línea del archivo
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException 
+     */
+    @Test
+    public void testLeerPrimeraLinea() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ejemplo = "Primera linea";
+        String ruta = corregirPath("archivoConUnaLinea.txt");
+        String resultado = archivoIO.leerArchivo(ruta);
+        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
+
+    }
+    
+    /**
+     * Prueba para leer un archivo que tiene múltiples lineas
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException 
+     */
+    @Test
+    public void testLeerMultiplesLineas() throws URISyntaxException, 
+            ValidacionPS1,IOException{
+        String ejemplo = "Primera linea-Segunda linea-Tercera linea";
+        String ruta = corregirPath("archivoConMultiplesLineas.txt");
+        String resultado = archivoIO.leerArchivo(ruta);
+        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());   
+    }
+    
+    /**
+     * Prueba para leer un archivo que tiene múltiples líneas ycon la inclusión
+     * de líneas en blanco.Se espera con esta prueba que el programa omita las 
+     * lineas en blanco.
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException 
+     */
+    @Test
+    public void testLeerDatosConLineasEnBlanco() throws URISyntaxException, 
+            ValidacionPS1,IOException{
+        String ejemplo = "Primera linea-Segunda linea-Tercera linea";
+        String ruta = corregirPath("archivoConMultiplesLineas.txt");
+        String resultado = archivoIO.leerArchivo(ruta);
+        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());   
+    }
+
+    
     /**
      * Prueba para ignorar un comentario simple del método 'cargarInstruccion' 
      *
