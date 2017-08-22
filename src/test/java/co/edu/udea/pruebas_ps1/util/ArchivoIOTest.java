@@ -14,10 +14,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

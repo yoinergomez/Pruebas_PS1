@@ -142,5 +142,4 @@ public class ArchivoIO {
         s.autoSizeColumn(2);
         s.autoSizeColumn(3);
     }
-
 }
