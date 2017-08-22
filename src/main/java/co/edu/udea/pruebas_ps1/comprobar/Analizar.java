@@ -48,8 +48,13 @@ public class Analizar {
         return aux.contains("){");
     }
 
+    /**
+     * Comprueba si el argumento 'linea' es un comentario
+     *
+     * @param linea
+     * @return
+     */
     private boolean esComentario(String linea) {
-        linea = linea.replaceAll("\\s+","");
         if (linea.startsWith("//")) {
             return true;
         }
@@ -61,9 +66,30 @@ public class Analizar {
         }
         return linea.startsWith("*");
     }
+    
+    /**
+     * Comprueba si el argumento 'linea' es un cierre de instrucción, es decir,
+     * ignora el cierre de una función o clase '}'
+     *
+     * @param linea
+     * @return
+     */
+    private boolean esCierreSentencia(String linea) {
+        if ((linea.length() == 1) && (linea.charAt(0) == '}')){
+            return true;
+        }
+        return false;
+    }
 
     public String cargarInstruccion(String linea) {
+        linea = linea.trim();
+        if (linea.isEmpty()) { //Línea en blanco
+            return null;
+        }
         if (esComentario(linea)) {
+            return null;
+        }
+        if (esCierreSentencia(linea)) {
             return null;
         }
         return "";
