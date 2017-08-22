@@ -123,6 +123,51 @@ public class AnalizarTest {
         assertNull(linea);
     }
     
+    /**
+     * Prueba para retornar una declaración de una función o clase
+     */
+    @Test
+    public void testRetornarAperturaSimple() {
+        final String LINEA = "\t\t public void testRetornarAperturaSimple() {\t";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertEquals("public void testRetornarAperturaSimple() {", linea);
+    }
+    
+    /**
+     * Prueba para retornar una declaración de una función o clase
+     * definida en múltiples líneas
+     */
+    @Test
+    public void testRetornarAperturaMultilinea() {
+        final String LINEA = "public void testRetornarAperturaSimple()throws"
+                + " FileNotFoundException,ValidacionPS0, URISyntaxException {";
+        String lineas[] = {"\t\t public void testRetornarAperturaSimple() \t",
+            "\t throws FileNotFoundException,",
+            " ValidacionPS0, URISyntaxException {"
+        };
+        String res1 = instancia.cargarInstruccion(lineas[0]);
+        String res2 = instancia.cargarInstruccion(lineas[1]);
+        String res3 = instancia.cargarInstruccion(lineas[2]);
 
+        assertTrue(res1.equals("...") && res2.equals("...") && res3.equals(LINEA));
+    }
+    
+    /**
+     * Prueba para retornar una declaración de un arreglo
+     * definida en múltiples líneas
+     */
+    @Test
+    public void testRetornarDeclaracionArreglo() {
+        final String LINEA = "String[ ] nombre = {\"María\",\"Gerson\"};";
+        String lineas[] = {"\t\t String[ ] nombre = { \t",
+            "\t \"María\",",
+            " \"Gerson\"};"
+        };
+        String res1 = instancia.cargarInstruccion(lineas[0]);
+        String res2 = instancia.cargarInstruccion(lineas[1]);
+        String res3 = instancia.cargarInstruccion(lineas[2]);
+    
+        assertTrue(res1.equals("...") && res2.equals("...") && res3.equals(LINEA));
+    }
 
 }

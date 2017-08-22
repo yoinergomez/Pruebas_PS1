@@ -9,6 +9,12 @@ package co.edu.udea.pruebas_ps1.comprobar;
  */
 public class Analizar {
 
+    private String multiLinea;
+
+    public Analizar() {
+        this.multiLinea = new String();
+    }
+
     /**
      * Verifica si una sentencia es un clase
      *
@@ -66,7 +72,7 @@ public class Analizar {
         }
         return linea.startsWith("*");
     }
-    
+
     /**
      * Comprueba si el argumento 'linea' es un cierre de instrucción, es decir,
      * ignora el cierre de una función o clase '}'
@@ -75,8 +81,39 @@ public class Analizar {
      * @return
      */
     private boolean esCierreSentencia(String linea) {
-        String sub = linea.substring(linea.indexOf("}")+1).trim();
+        String sub = linea.substring(linea.indexOf("}") + 1).trim();
         return (linea.charAt(0) == '}') || esComentario(sub);
+    }
+
+    /**
+     * Comprueba si el argumento 'linea' es el final de una sentencia
+     * finalizando con un ";" o "{" siendo el último, el caso para las clases y
+     * métodos
+     *
+     * @param linea
+     * @return
+     */
+    private boolean esFinalInstruccion(String linea) {
+
+        if (esDeclaracionArreglo(linea)) {
+            return false;
+        }
+        return linea.endsWith("{") || linea.endsWith(";");
+    }
+
+    /**
+     * Verifica si el argumento ingresado es una declaración de un arreglo
+     *
+     * @param linea
+     * @return
+     */
+    private boolean esDeclaracionArreglo(String linea) {
+        String lineaSinEspacios = linea.replaceAll("\\s", "");
+        int index = lineaSinEspacios.indexOf("{") - 1;
+        if (index >= 0) {
+            return lineaSinEspacios.substring(index).startsWith("=");
+        }
+        return false;
     }
 
     public String cargarInstruccion(String linea) {
@@ -89,6 +126,13 @@ public class Analizar {
         }
         if (esCierreSentencia(linea)) {
             return null;
+        }
+        if (!esFinalInstruccion(linea)) {
+            multiLinea += linea;
+            return "...";
+        } else if (multiLinea != null) {
+            linea = multiLinea + linea;
+            multiLinea = "";
         }
         return linea;
     }
