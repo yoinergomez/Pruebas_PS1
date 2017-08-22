@@ -19,8 +19,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author Pc1
+ * Clase que contienen los casos de prueba para ArchivoIO
+ * @author Jhonatan Orozco Blandón
+ * @date 2017/21/08
+ * @version 1
  */
 public class ArchivoIOTest {
 

@@ -5,15 +5,12 @@
  */
 package co.edu.udea.pruebas_ps1.comprobar;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Clase que contienen los casos de prueba para DectectorCasosEspeciales
  * @author Jhonatan Orozco Blandón
  * @date 2017/08/21
  * @version 1
@@ -72,5 +69,71 @@ public class DetectorCasosEspecialesTest {
     }
     
     
+    /**
+     * Prueba con una línea de código distinta a la declaración de variables. En
+     * este caso en particular se prueba con la definición de un método. Se espera
+     * que retorne cero, ya que ese tipo de línea no le compete.
+     */
+    @Test
+    public void testLineaDistintaADeclaracionVariables(){
+         String linea="public void escribirResultadosClaseLOC"
+                 + "(Sheet s, ClaseLOC clase, int numeroFilas)\n" +
+"            throws FileNotFoundException, IOException, URISyntaxException {;";
+        int numeroInstrucciones=detector.detectarMultipleCreacionVariables(linea);
+        assertEquals(0,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for.
+     */
+    @Test
+    public void testDetectarInstruccionFor(){
+        String linea="for(int i=0;i<3;i++){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(3,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for sin la inicialización de 
+     * la varable controladora.
+     */
+    @Test
+    public void testForSinInicializacion(){
+        String linea="for(  ;i<3;i++){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(2,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for sin el incremento de 
+     * la varable controladora.
+     */
+    @Test
+    public void testForSinIncremento(){
+        String linea="for( int i=0 ;i<3;  ){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(2,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for con solomante la condición
+     * de parada del ciclo.
+     */
+    @Test
+    public void testForConSoloElCondicional(){
+        String linea="for( ;i<10 ; ){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(1,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for sin instrucciones.
+     */
+    @Test
+    public void testForSinInstrucciones(){
+        String linea="for( ; ;){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(1,numeroInstrucciones);
+    }
     
 }

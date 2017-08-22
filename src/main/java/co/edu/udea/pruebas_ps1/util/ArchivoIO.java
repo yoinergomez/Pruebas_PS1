@@ -44,6 +44,14 @@ public class ArchivoIO {
      */
     private int numeroLineas;
 
+    /**
+     * Método que encuentra el archivo buscado por medio de la ruta y que 
+     * verifica que la extensión sea .txt
+     * @param rutaArchivo
+     * @return
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1 
+     */
     public File encontrarArchivo(String rutaArchivo) throws FileNotFoundException,
             ValidacionPS1 {
         String extArchivo;
@@ -59,6 +67,14 @@ public class ArchivoIO {
         return archivo;
     }
 
+    /**
+     * Método que lee los datos de archivo que se ingresa por medio de la ruta
+     * @param rutaArchivo
+     * @return EL texto que se encuentra en el archivo
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1
+     * @throws IOException 
+     */
     public String leerArchivo(String rutaArchivo) throws FileNotFoundException,
             ValidacionPS1, IOException {
         String cadena;
@@ -75,6 +91,15 @@ public class ArchivoIO {
         return textoArchivo;
     }
 
+    /**
+     * Método que escribe en la hoja de Excel el objeto de la clase ClaseLOC
+     * @param s
+     * @param clase
+     * @param numeroFilas
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws URISyntaxException 
+     */
     public void escribirResultadosClaseLOC(Sheet s, ClaseLOC clase, int numeroFilas)
             throws FileNotFoundException, IOException, URISyntaxException {
         int numeroCeldas = 0;
@@ -89,6 +114,10 @@ public class ArchivoIO {
         c.setCellValue(clase.getNumeroLineas());
     }
     
+    /**
+     * Método que crea el encabezado en la hoja de Excel
+     * @param s 
+     */
     private void crearEncabezadoExcel(Sheet s){
         int numeroCeldas = 0;
         Row r = s.createRow(0);
@@ -105,6 +134,16 @@ public class ArchivoIO {
         c.setCellValue("Total");
     }
 
+    
+    /**
+     * Método que escribe en la hoja de Excel la lista de objetos de tipo 
+     * ClaseLOC
+     * @param clases
+     * @return
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws URISyntaxException 
+     */
     public File escribirResultadosPrograma(ArrayList<ClaseLOC> clases) throws
             IOException, FileNotFoundException, URISyntaxException {
         int numeroVariables = clases.size();
@@ -136,6 +175,11 @@ public class ArchivoIO {
         return f;
     }
     
+    /**
+     * Método que ajusta las columnas del Excel de acuerdo a lo longitud de las
+     * palabras que se guardan en la hoja.
+     * @param s 
+     */
     private void ajustarColumnasExcel(Sheet s){
         s.autoSizeColumn(0);
         s.autoSizeColumn(1);
