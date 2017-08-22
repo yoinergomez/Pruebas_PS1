@@ -1,0 +1,1043 @@
+package co.edu.udea.pruebas_ps0.ldl;
+
+/**
+ * Clase que contiene la estructura de una lista doblemente ligada con nodo 
+ * cabeza, donde el dato del nodo cabeza alamacena la cantidad de nodos en la
+ * lista
+ * @author Frank Castrillón - frank.castrillon@udea.edu.co
+ * @date 2017/08/11
+ * @version v1
+ */
+public class LDL {
+    
+    private NodoDoble cabeza;
+    private NodoDoble ultimo;
+
+    public LDL() {
+        cabeza = new NodoDoble(null, null, new Double(0));
+        ultimo = cabeza;
+    }
+    /**
+     * Inserta el nuevo nodo al final de la lista
+     * @param nuevo 
+     */
+    public void insertar(NodoDoble nuevo) {
+        if (nuevo != cabeza && nuevo != ultimo){
+            ultimo.setSiguiente(nuevo);
+            nuevo.setAnterior(ultimo);
+            ultimo = nuevo;
+            cabeza.setDato(cabeza.getDato() + new Double(1));
+        }
+    }
+    
+    /**
+     * Elimina el nodo que se pasa por referencia, si existe retorna true 
+     * de lo contrario false
+     * @param candidato
+     * @return 
+     */
+    public boolean eliminar(NodoDoble candidato) {
+        if (candidato == cabeza){
+            return false;
+        }
+        if (candidato == ultimo){
+            candidato.getAnterior().setSiguiente(null);
+        }else{
+            NodoDoble actual = cabeza;
+            while (actual.getSiguiente() != candidato 
+                    && actual.getSiguiente() != null){
+                actual = actual.getSiguiente();
+            }
+            if (actual == ultimo){
+                return false;
+            }
+            actual.setSiguiente(candidato.getSiguiente());
+            candidato.getSiguiente().setAnterior(actual);
+        }
+        cabeza.setDato(cabeza.getDato() - new Double(1));   
+        return true;
+    }
+    
+    /**
+     * Imprime los datos de la lista ligada
+     */
+    public void imprimirLista() {
+        NodoDoble aux = cabeza;
+        System.out.print("HEAD["+aux.getDato()+"]");
+        aux = aux.getSiguiente();
+        while (aux != null) {
+            System.out.print(" <=> "+aux.getDato());
+            aux = aux.getSiguiente();
+        }
+    }
+
+    public NodoDoble getUltimo() {
+        return ultimo;
+    }
+
+    public NodoDoble getPrimerNodo() {
+        return cabeza.getSiguiente();
+    }
+
+    public Double sumar() {
+        NodoDoble aux = cabeza.getSiguiente();
+        Double suma = new Double(0);
+        while (aux != null) {
+            suma += aux.getDato();
+            aux = aux.getSiguiente();
+        }
+        return Math.round(suma * 1e4) / 1e4;
+    }
+    
+    public int length() {
+        return cabeza.getDato().intValue();
+    }
+    
+    public NodoDoble siguienteNodo(NodoDoble nodoActual){
+        return nodoActual.getSiguiente();
+    }
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0.ldl;
+
+/**
+ * Clase que contiene la estructura de un nodo
+ * @author Frank Castrillón - frank.castrillon@udea.edu.co
+ * @date 2017/08/11
+ * @version v1
+ */
+public class NodoDoble {
+    private Double dato;
+    private NodoDoble siguiente;
+    private NodoDoble anterior;
+    
+    /**
+     * Contructor de la clase Node
+     * @param next nodo siguiente
+     * @param previous nodo anterior
+     * @param dato dato del nodo
+     */
+    public NodoDoble(NodoDoble next, NodoDoble previous, Double dato) {
+         this.siguiente = next;
+         this.anterior = previous;
+         this.dato = dato;
+    }
+    /**
+     * Constructor de la clase node, se asigna null a los nodos next y previous
+     * @param dato 
+     */
+    public NodoDoble(Double dato) {
+         this.siguiente = null;
+         this.anterior = null;
+         this.dato = dato;
+    }
+    /**
+     * Constructor de la clase node vacio, se asigna null a todos los atributos
+     */
+    public NodoDoble() {
+         this.siguiente = null;
+         this.anterior = null;
+         this.dato = null;
+    }
+
+    public Double getDato() {
+        return dato;
+    }
+
+    public void setDato(Double dato) {
+        this.dato = dato;
+    }
+
+    NodoDoble getSiguiente() {
+        return siguiente;
+    }
+
+    void setSiguiente(NodoDoble siguiente) {
+        this.siguiente = siguiente;
+    }
+
+    NodoDoble getAnterior() {
+        return anterior;
+    }
+
+    void setAnterior(NodoDoble anterior) {
+        this.anterior = anterior;
+    }
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0.util.estadistica;
+
+import co.edu.udea.pruebas_ps0.ldl.LDL;
+import co.edu.udea.pruebas_ps0.ldl.NodoDoble;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+/**
+ *
+ * @author Jhonatan Orozco Blandón
+ */
+public class MedidasEstadisticas {
+    
+    public Double calcularMedia(LDL lista){
+        Double sumaNodos = lista.sumar();
+        int numNodos = lista.length();
+        
+        if (numNodos==0) {
+            throw new ArithmeticException("División por cero: La lista está vacía.");
+        }
+        
+        return Math.round((sumaNodos/numNodos) * 1e4) / 1e4;
+    }
+
+    Double calcularVarianza(LDL listaPrueba) {
+        final Double MEDIA = calcularMedia(listaPrueba);
+        final int N = listaPrueba.length();
+        Double sumatoria = new Double(0);
+        NodoDoble nodo = listaPrueba.getPrimerNodo();
+        
+        while(nodo != null){
+            sumatoria += Math.pow((nodo.getDato() - MEDIA), 2);
+            nodo = listaPrueba.siguienteNodo(nodo);
+        }
+        
+        return Math.round((sumatoria/(N-1)) * 1e4) / 1e4;
+    }
+
+    public Double calcularDesviacionEstandar(LDL listaPrueba) {
+        Double resultado = Math.sqrt(calcularVarianza(listaPrueba));
+        Double resultadoConPrecision = BigDecimal.valueOf(resultado).setScale(2,
+                RoundingMode.HALF_UP).doubleValue();
+        return resultadoConPrecision;
+    }
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0.util.excepcion;
+
+/**
+ *
+ * @author Jhonatan Orozco Blandón
+ */
+public class ValidacionPS0 extends Exception {
+    
+    public ValidacionPS0(String arg0) {
+        super(arg0);
+    }
+    
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0.util;
+
+import co.edu.udea.pruebas_ps0.ldl.LDL;
+import co.edu.udea.pruebas_ps0.ldl.NodoDoble;
+import co.edu.udea.pruebas_ps0.util.estadistica.MedidasEstadisticas;
+import co.edu.udea.pruebas_ps0.util.excepcion.ValidacionPS0;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellReference;
+
+/**
+ *
+ * @author Jhonatan Orozco Blandón
+ */
+public class ArchivosExcelIO {
+
+    private Sheet sheet;
+    private Workbook workbook;
+    private final ArrayList<LDL> listaColumnas;
+
+    public ArchivosExcelIO() {
+        this.listaColumnas = new ArrayList<>();
+    }
+
+
+    public ArrayList<LDL> getListaColumnas() {
+        return listaColumnas;
+    }
+
+    public void convertirExcelALDL(String nombreArchivo) throws FileNotFoundException,
+            ValidacionPS0, IOException {
+        File f = encontrarArchivo(nombreArchivo);
+        workbook = abrirLibroExcel(f);
+        sheet = workbook.getSheetAt(0);
+
+        Iterator<Row> rowIterator = sheet.iterator();
+        while (rowIterator.hasNext()) {
+            Row fila = rowIterator.next();
+            Iterator<Cell> cellIterator = fila.cellIterator();
+            int i = 0;
+
+            while (cellIterator.hasNext()) {
+                Cell celda = cellIterator.next();
+                if (listaColumnas.size() <= i) {
+                    listaColumnas.add(i, new LDL());
+                }
+                if (esCeldaValida(celda)) {
+                    listaColumnas.get(i).insertar(new NodoDoble(celda.getNumericCellValue()));
+                }
+                i++;
+            }
+        }
+    }
+
+    public boolean esCeldaValida(Cell celda) throws ValidacionPS0 {
+        if (celda == null || celda.getCellType() == Cell.CELL_TYPE_BLANK) {
+            return false;
+        } else if (celda.getCellType() != Cell.CELL_TYPE_NUMERIC) {
+            CellReference cr = new CellReference(celda);
+            throw new ValidacionPS0("Error leyendo la celda "+cr.formatAsString());
+        }
+        return true;
+    }
+
+    public File encontrarArchivo(String nombreArchivo) throws FileNotFoundException,
+            ValidacionPS0 {
+        File f = new File(nombreArchivo);
+        String extArchivo;
+        if (!f.exists()) {
+            throw new FileNotFoundException("El archivo no existe");
+        }
+        extArchivo = FilenameUtils.getExtension(f.getName());
+        if ("xls".compareTo(extArchivo) != 0) {
+            throw new ValidacionPS0("La extensión es inválida");
+        }
+
+        return f;
+    }
+
+    public Workbook abrirLibroExcel(File f) throws FileNotFoundException,
+            IOException {
+        InputStream in = new FileInputStream(f);
+        Workbook w = new HSSFWorkbook(in);
+
+        return w;
+    }
+    
+    public void generarResultadosVariable(Sheet s,LDL lista, int numeroFilas) throws 
+            URISyntaxException, IOException{
+        MedidasEstadisticas medidas=new MedidasEstadisticas();
+            int numeroCeldas=0;
+            double media;
+            double desviacion;
+            Row r=s.createRow(numeroFilas);
+            numeroFilas++;
+            Cell c=r.createCell(numeroCeldas);
+            c.setCellValue("Variable "+ (numeroFilas-1));
+            numeroCeldas++;
+            c=r.createCell(numeroCeldas);
+            media=medidas.calcularMedia(lista);
+            c.setCellValue(media);
+            numeroCeldas++;
+            c=r.createCell(numeroCeldas);
+            desviacion=medidas.calcularDesviacionEstandar(lista);
+            c.setCellValue(desviacion);
+    }
+    
+    public File generarResultados(ArrayList <LDL> variables) throws URISyntaxException, 
+            IOException{
+        int numeroVariables=variables.size();
+        Workbook w = new HSSFWorkbook();
+        Sheet s=w.createSheet();
+        String rutaProyecto;
+        int numeroCeldas=0;
+        Row r=s.createRow(0);
+        Cell c=r.createCell(numeroCeldas);
+        c.setCellValue("Variables");
+        numeroCeldas++;
+        c=r.createCell(numeroCeldas);
+        c.setCellValue("Media");
+        numeroCeldas++;
+        c=r.createCell(numeroCeldas);
+        c.setCellValue("Desviación");
+
+        for (int i = 0; i < numeroVariables; i++) {
+            LDL lista=variables.get(i);
+            generarResultadosVariable(s,lista,i+1);
+        }
+
+         rutaProyecto = ArchivosExcelIO.class.getProtectionDomain().
+                    getCodeSource().getLocation().toURI().getPath();
+        Date date = new Date();
+        
+        String nombreArchivo = "resultado " + date.getTime()
+                + ".xls";
+        rutaProyecto = rutaProyecto.concat(nombreArchivo);
+        FileOutputStream outputStream = new FileOutputStream(rutaProyecto);
+        w.write(outputStream);
+        File f=new File(rutaProyecto);
+        return f;
+            
+    }
+
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0;
+
+import co.edu.udea.pruebas_ps0.ldl.LDL;
+import co.edu.udea.pruebas_ps0.util.ArchivosExcelIO;
+import co.edu.udea.pruebas_ps0.util.excepcion.ValidacionPS0;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+
+/**
+ * Es la clase principal que se encarga de ejecutar el proyecto.
+ *
+ * @author Yoiner Gómez - yoiner.gomez22@gmail.com
+ * @date 2017/08/11
+ * @version v1
+ */
+public class Main {
+
+    public static void main(String[] args) throws IOException, ValidacionPS0, URISyntaxException {
+        ArchivosExcelIO archivo = new ArchivosExcelIO();
+
+        try {
+
+            InputStreamReader isr = new InputStreamReader(System.in);
+            BufferedReader br = new BufferedReader(isr);
+            System.out.println("Introduce el path del archivo de excel.");
+            System.out.println("ejemplo: C:\\Users\\Laptop\\Downloads\\archivo.xls: ");
+            System.out.println("path: ");
+            
+            String path = br.readLine();
+            archivo.convertirExcelALDL(path);
+            ArrayList<LDL> variables = archivo.getListaColumnas();
+
+            File f = archivo.generarResultados(variables);
+            System.out.println("Revise los resultados en la ruta:" + f.getAbsolutePath());
+            
+            isr.close();
+            br.close();
+            
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
+
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0.ldl;
+
+import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ *
+ * @author frank
+ */
+public class LDLTest {
+    
+    private LDL instancia;
+    
+    public LDLTest() {
+    }
+    
+    @Before
+    public void setUp() {
+        instancia = new LDL();
+        instancia.insertar(new NodoDoble(new Double(20)));
+        instancia.insertar(new NodoDoble(new Double(10)));
+        instancia.insertar(new NodoDoble(new Double(50)));
+    }
+    
+
+    /**
+     * Test of insertar method, of class LDL.
+     */
+    @Test
+    public void testInsertar() {
+        NodoDoble nuevo = new NodoDoble();
+        instancia.insertar(nuevo);
+        assertEquals(instancia.getUltimo(), nuevo);
+    }
+
+    /**
+     * Test of eliminar method, of class LDL.
+     */
+    @Test
+    public void testEliminar() {
+        NodoDoble candidato = new NodoDoble(new Double(60));
+        instancia.insertar(candidato);
+        boolean result = instancia.eliminar(candidato);
+        instancia.imprimirLista();
+        assertEquals(Boolean.TRUE, result);
+    }
+    
+    @Test
+    public void testEliminarNodo() {
+        NodoDoble candidato = new NodoDoble(new Double(60));
+        LDL instancia = new LDL();
+        instancia.insertar(new NodoDoble(new Double(20)));
+        instancia.insertar(new NodoDoble(new Double(10)));
+        instancia.insertar(candidato);
+        instancia.insertar(new NodoDoble(new Double(50)));
+        boolean result = instancia.eliminar(candidato);
+        instancia.imprimirLista();
+        assertEquals(Boolean.TRUE, result);
+    }
+    
+    @Test
+    public void testEliminarNoExist() {
+        NodoDoble candidato = new NodoDoble(new Double(60));
+        LDL instancia = new LDL();
+        instancia.insertar(new NodoDoble(new Double(20)));
+        instancia.insertar(new NodoDoble(new Double(10)));
+        instancia.insertar(new NodoDoble(new Double(50)));
+        boolean result = instancia.eliminar(candidato);
+        assertEquals(Boolean.FALSE, result);
+    }
+    
+    @Test
+    public void testEliminarCabeza() {
+        boolean result = instancia.eliminar(instancia.getPrimerNodo().getAnterior());
+        instancia.imprimirLista();
+        assertEquals(Boolean.FALSE, result);
+    }
+    
+    @Test
+    public void testEliminarUltimo() {
+        boolean result = instancia.eliminar(instancia.getUltimo());
+        instancia.imprimirLista();
+        assertEquals(Boolean.TRUE, result);
+    }   
+    /**
+     * Test of getUltimo method, of class LDL.
+     */
+    @Test
+    public void testGetUltimo() {
+        NodoDoble candidato = new NodoDoble(new Double(60));
+        instancia.insertar(candidato);
+        NodoDoble result = instancia.getUltimo();
+        assertEquals(candidato, result);
+    }
+    
+    @Test
+    public void testSumarElementosLista(){
+        Double resultado = instancia.sumar();
+        assertEquals(new Double(80.0), resultado);
+    }
+    
+    @Test
+    public void testSumarNegativosDecimalLista(){
+        instancia.insertar(new NodoDoble(new Double(1)));
+        instancia.insertar(new NodoDoble(new Double("-80.5")));
+        Double resultado = instancia.sumar();
+        assertEquals(new Double(0.5), resultado);
+    }
+    
+    @Test
+    public void testSumarElementosListaVacia(){
+        LDL lista = new LDL();
+        assertEquals(new Double(0), lista.sumar());
+    }
+    
+    @Test
+    public void testAgregarDatoGigante(){
+        Double foo = Double.MAX_VALUE*Double.MAX_VALUE;
+        instancia.insertar(new NodoDoble(foo));
+    }
+    
+    @Test
+    public void testTamaño() {
+        int tamaño = instancia.length();
+        assertEquals(3, tamaño);
+    }
+    
+    @Test
+    public void testLength(){
+        int numNodos = instancia.length();
+        assertEquals(3, numNodos);
+    }
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0.ldl;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ *
+ * @author frank
+ */
+public class NodoDobleTest {
+
+    /**
+     * Test of getDato method, of class NodoDoble.
+     */
+    @Test
+    public void testGetDato() {
+        NodoDoble instancia = new NodoDoble(new Double(10));
+        assertEquals(instancia.getDato(), new Double(10));
+    }
+
+    /**
+     * Test of setDato method, of class NodoDoble.
+     */
+    @Test
+    public void testSetDato() {
+        Double dato = new Double(20);
+        NodoDoble instancia = new NodoDoble();
+        instancia.setDato(dato);
+        assertEquals(instancia.getDato(), new Double(20));
+    }
+    
+    @Test(expected = NumberFormatException.class)
+    public void testSetDatoString() {
+        NodoDoble instancia = new NodoDoble();
+        instancia.setDato(new Double("sadasda"));
+    }
+
+    /**
+     * Test of getSiguiente method, of class NodoDoble.
+     */
+    @Test
+    public void testGetSiguiente() {
+        NodoDoble siguiente = new NodoDoble();
+        NodoDoble instancia = new NodoDoble(siguiente, null, null);
+        assertEquals(instancia.getSiguiente(), siguiente);
+    }
+
+    /**
+     * Test of setSiguiente method, of class NodoDoble.
+     */
+    @Test
+    public void testSetSiguiente() {
+        NodoDoble siguiente = new NodoDoble();
+        NodoDoble instancia = new NodoDoble();
+        instancia.setSiguiente(siguiente);
+        assertEquals(instancia.getSiguiente(), siguiente);
+    }
+
+    /**
+     * Test of getAnterior method, of class NodoDoble.
+     */
+    @Test
+    public void testGetAnterior() {
+        NodoDoble anterior = new NodoDoble();
+        NodoDoble instancia = new NodoDoble(null, anterior, null);
+        assertEquals(instancia.getAnterior(), anterior);
+    }
+
+    /**
+     * Test of setAnterior method, of class NodoDoble.
+     */
+    @Test
+    public void testSetAnterior() {
+        NodoDoble anterior = new NodoDoble();
+        NodoDoble instancia = new NodoDoble();
+        instancia.setAnterior(anterior);
+        assertEquals(instancia.getAnterior(), anterior);
+    }
+    
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0.util.estadistica;
+
+import co.edu.udea.pruebas_ps0.ldl.LDL;
+import co.edu.udea.pruebas_ps0.ldl.NodoDoble;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Comprueba el funcionamiento de los métodos de la clase
+ * MedidasEstadisticasTest
+ *
+ * @author Yoiner Gómez - yoiner.gomez22@gmail.com
+ * @date 2017/08/11
+ * @version v1
+ */
+public class MedidasEstadisticasTest {
+
+    private LDL listaPrueba;
+    private MedidasEstadisticas testMedidas;
+
+    @Before
+    public void inicializarLista() {
+        listaPrueba = new LDL();
+        testMedidas = new MedidasEstadisticas();
+        listaPrueba.insertar(new NodoDoble(new Double("2")));
+        listaPrueba.insertar(new NodoDoble(new Double("1")));
+        listaPrueba.insertar(new NodoDoble(new Double("9")));
+        listaPrueba.insertar(new NodoDoble(new Double("7.6")));
+        listaPrueba.insertar(new NodoDoble(new Double("0.4")));
+    }
+    
+    @Test
+    public void testMedia() {
+        Double media = testMedidas.calcularMedia(listaPrueba);
+        assertTrue(media == 4.0);
+    }
+    
+    @Test (expected=ArithmeticException.class)
+    public void testMediaListaVacia() {
+        LDL lista = new LDL();
+        testMedidas.calcularMedia(lista);
+    }
+    
+    @Test
+    public void testVarianza() {
+        Double varianza = testMedidas.calcularVarianza(listaPrueba);
+        listaPrueba.imprimirLista();
+        assertEquals(15.98, varianza, 0);
+    }
+    
+    @Test
+    public void testDesviacionEstandar() {
+        Double desviacionEstandar = testMedidas.calcularDesviacionEstandar(listaPrueba);
+        assertEquals(desviacionEstandar, 4.0, 0);
+    }
+    
+    @Test
+    public void testDesviacionEstandarCero() {
+        LDL lista = new LDL();
+        lista.insertar(new NodoDoble(new Double("6.9")));
+        lista.insertar(new NodoDoble(new Double("6.9")));
+        lista.insertar(new NodoDoble(new Double("6.9")));
+        Double desviacionEstandar = testMedidas.calcularDesviacionEstandar(lista);
+        assertEquals(desviacionEstandar, 0, 0);
+    }
+ 
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0.util;
+
+import co.edu.udea.pruebas_ps0.ldl.LDL;
+import co.edu.udea.pruebas_ps0.ldl.NodoDoble;
+import co.edu.udea.pruebas_ps0.util.excepcion.ValidacionPS0;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.SystemUtils;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.Before;
+
+/**
+ *
+ * @author Pc1
+ */
+public class ArchivosExcelIOTest {
+
+    private ArchivosExcelIO archivosExcelIO;
+
+    public ArchivosExcelIOTest() {
+    }
+
+    public String corregirPath(String nombreRecurso) throws URISyntaxException {
+        String path = this.getClass().getClassLoader().getResource(nombreRecurso)
+                .toURI().toString();
+        if (SystemUtils.IS_OS_WINDOWS) {
+            return path.substring(6);
+        }
+        return path.substring(5);
+    }
+
+    @Before
+    public void inicializar() {
+        archivosExcelIO = new ArchivosExcelIO();
+    }
+
+    /**
+     *
+     */
+    @Test
+    public void testExisteArchivosExcelIO() {
+        assertNotNull(archivosExcelIO);
+
+    }
+
+    /**
+     * Test of testAbrirArchivoInexistente method, of class ArchivosExcelIO.
+     *
+     * @throws java.io.FileNotFoundException
+     * @throws co.edu.udea.pruebas_ps0.util.excepcion.ValidacionPS0
+     * @throws java.net.URISyntaxException
+     */
+    @Test(expected = FileNotFoundException.class)
+    public void testAbrirArchivoInexistente() throws
+            ValidacionPS0, URISyntaxException, FileNotFoundException {
+        String path = "esteArchivoNoExiste.xls";
+        archivosExcelIO.encontrarArchivo(path);
+    }
+
+    /**
+     *
+     * @throws FileNotFoundException
+     * @throws co.edu.udea.pruebas_ps0.util.excepcion.ValidacionPS0
+     * @throws java.net.URISyntaxException
+     */
+    @Test
+    public void testAbrirArchivoExistente() throws FileNotFoundException,
+            ValidacionPS0, URISyntaxException {
+        String path = corregirPath("prueba.xls");
+        File f = archivosExcelIO.encontrarArchivo(path);
+        assertTrue(f.exists());
+    }
+
+    /**
+     * Test of escribirEnExcel method, of class ArchivosExcelIO.
+     *
+     * @throws java.io.FileNotFoundException
+     * @throws co.edu.udea.pruebas_ps0.util.excepcion.ValidacionPS0
+     * @throws java.net.URISyntaxException
+     */
+    @Test
+    public void testAbrirArchivosExcel() throws FileNotFoundException,
+            ValidacionPS0, URISyntaxException {
+        String path = corregirPath("prueba.xls");
+        File f = archivosExcelIO.encontrarArchivo(path);
+        String ext = FilenameUtils.getExtension(f.getName());
+        assertArrayEquals("xls".toCharArray(), ext.toCharArray());
+    }
+
+    /**
+     *
+     * @throws FileNotFoundException
+     * @throws co.edu.udea.pruebas_ps0.util.excepcion.ValidacionPS0
+     * @throws java.net.URISyntaxException
+     */
+    @Test(expected = ValidacionPS0.class)
+    public void testAbrirArchivoDistintoExcel() throws FileNotFoundException,
+            ValidacionPS0, URISyntaxException {
+        String path = corregirPath("prueba.txt");
+        archivosExcelIO.encontrarArchivo(path);
+    }
+
+    /**
+     *
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ValidacionPS0
+     * @throws URISyntaxException
+     */
+    @Test
+    public void testAbrirLibroExcel() throws FileNotFoundException, IOException,
+            ValidacionPS0, URISyntaxException {
+        String path = corregirPath("prueba.xls");
+        File f = archivosExcelIO.encontrarArchivo(path);
+        Workbook w = archivosExcelIO.abrirLibroExcel(f);
+        assertNotNull(w);
+    }
+
+    @Test
+    public void testLeerPrimeraCelda() throws URISyntaxException, ValidacionPS0,
+            IOException {
+        String path = corregirPath("prueba.xls");
+        archivosExcelIO.convertirExcelALDL(path);
+        LDL lista = archivosExcelIO.getListaColumnas().get(0);
+        assertNotNull(lista.getPrimerNodo());
+    }
+
+    @Test
+    public void testLeerPrimerCeldaVacia() throws URISyntaxException, ValidacionPS0,
+            IOException {
+        String path = corregirPath("pruebaVacio.xls");
+        archivosExcelIO.convertirExcelALDL(path);
+        LDL lista = archivosExcelIO.getListaColumnas().get(0);
+        assertNull(lista.getPrimerNodo());
+    }
+
+    @Test
+    public void testLeerPrimerColumna() throws URISyntaxException, ValidacionPS0,
+            IOException {
+        String path = corregirPath("prueba.xls");
+        archivosExcelIO.convertirExcelALDL(path);
+        LDL lista = archivosExcelIO.getListaColumnas().get(0);
+        assertEquals(4, lista.length());
+    }
+
+    @Test(expected = ValidacionPS0.class)
+    public void testLeerArchivoCorrupto() throws URISyntaxException, ValidacionPS0,
+            IOException {
+        String path = corregirPath("pruebaCaracter.xls");
+        archivosExcelIO.convertirExcelALDL(path);
+    }
+
+    @Test
+    public void testCopiarMediaAExcel() throws URISyntaxException, IOException {
+        LDL lista = new LDL();
+        NodoDoble nodo;
+        for (int i = 1; i <= 10; i++) {
+            nodo = new NodoDoble(new Double(Integer.toString(i)));
+            lista.insertar(nodo);
+        }
+        ArrayList<LDL> variables = new ArrayList();
+        variables.add(lista);
+        File f = archivosExcelIO.generarResultados(variables);
+        assertTrue(f.exists());
+
+    }
+
+    @Test
+    public void testCopiarMediayDesviacionAExcel() throws URISyntaxException,
+            IOException {
+        LDL lista = new LDL();
+        NodoDoble nodo;
+        for (int i = 1; i <= 10; i++) {
+            nodo = new NodoDoble(new Double(Integer.toString(i)));
+            lista.insertar(nodo);
+        }
+        ArrayList<LDL> variables = new ArrayList();
+        variables.add(lista);
+        File f = archivosExcelIO.generarResultados(variables);
+        assertTrue(f.exists());
+    }
+    
+    @Test
+    public void testCopiarMediayDesviacionMultiplesVariables() throws URISyntaxException, 
+            IOException{
+        LDL lista1=new LDL();
+        LDL lista2=new LDL();
+        LDL lista3=new LDL();
+        NodoDoble nodo;
+        for(int i=1;i<=10;i++){
+            nodo= new NodoDoble(new Double(Integer.toString(i)));
+            lista1.insertar(nodo);
+        }
+        for(int i=1;i<=7;i++){
+            nodo= new NodoDoble(new Double(Integer.toString(i+2)));
+            lista2.insertar(nodo);
+        }
+        
+        for(int i=1;i<=5;i++){
+            nodo= new NodoDoble(new Double(Integer.toString(i*2)));
+            lista3.insertar(nodo);
+        }
+        ArrayList<LDL> variables=new ArrayList();
+        variables.add(lista1);
+        variables.add(lista2);
+        variables.add(lista3);
+        File f=archivosExcelIO.generarResultados(variables);
+        assertTrue(f.exists());
+        
+    }
+
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps0;
+
+import co.edu.udea.pruebas_ps0.util.excepcion.ValidacionPS0;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import org.apache.commons.lang.SystemUtils;
+import org.junit.Test;
+
+/**
+ *
+ * @author Frank
+ */
+public class MainTest {
+
+    public MainTest() {
+    }
+
+    public String corregirPath(String nombreRecurso) throws URISyntaxException {
+        String path = this.getClass().getClassLoader().getResource(nombreRecurso)
+                .toURI().toString();
+        if (SystemUtils.IS_OS_WINDOWS) {
+            return path.substring(6);
+        }
+        return path.substring(5);
+    }
+
+    /**
+     * Test of main method, of class Main.
+     *
+     * @throws java.net.URISyntaxException
+     */
+    @Test
+    public void testMain() throws URISyntaxException, IOException, ValidacionPS0 {
+        String data = corregirPath("prueba.xls");
+        String[] args = null;
+        final InputStream original = System.in;
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        Main.main(args);
+        System.setIn(original);
+    }
+
+    @Test
+    public void testMainClass() {
+        Main m = new Main();
+    }
+
+}
