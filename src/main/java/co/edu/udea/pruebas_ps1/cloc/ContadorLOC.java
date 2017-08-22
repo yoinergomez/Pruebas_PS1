@@ -1,4 +1,4 @@
-package co.edu.udea.pruebas_ps1.comprobar;
+package co.edu.udea.pruebas_ps1.cloc;
 
 /**
  * Es la clase encargada de verificar si una sentencia es una clase o un método
@@ -7,11 +7,11 @@ package co.edu.udea.pruebas_ps1.comprobar;
  * @date 2017/08/19
  * @version v1
  */
-public class Analizar {
+public class ContadorLOC {
 
     private String multiLinea;
 
-    public Analizar() {
+    public ContadorLOC() {
         this.multiLinea = new String();
     }
 

@@ -1,26 +1,26 @@
-package co.edu.udea.pruebas_ps1.comprobar;
+package co.edu.udea.pruebas_ps1.cloc;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**
- * Es la clase que contiene las pruebas unitarias para la clase Analizar.java
+ * Es la clase que contiene las pruebas unitarias para la clase ContadorLOC.java
  *
  * @author Frank Castrillón - castrillonfrank114@gmail.com
  * @date 2017/08/19
  * @version v1
  */
-public class AnalizarTest {
+public class ContadorLOCTest {
 
-    Analizar instancia;
+    ContadorLOC instancia;
 
-    public AnalizarTest() {
+    public ContadorLOCTest() {
     }
 
     @Before
     public void setUp() {
-        instancia = new Analizar();
+        instancia = new ContadorLOC();
     }
 
     @Test
@@ -72,13 +72,18 @@ public class AnalizarTest {
     }
     
     /**
-     * Prueba para ignorar una línea con un tabulado
+     * Prueba para ignorar un bloque de comentario del método 'cargarInstruccion'
      */
     @Test
-    public void testIgnorarLineaTabulado() {
-        final String LINEA = "\t ";
+    public void testIgnorarBloqueComentario() {
+        final String LINEA = "       /* Esto es un comentario";
+        final String LINEA2 = "      *  ";
+        final String LINEA3 = "      */ ";
         String linea = instancia.cargarInstruccion(LINEA);
-        assertNull(linea);
+        String linea2 = instancia.cargarInstruccion(LINEA2);
+        String linea3 = instancia.cargarInstruccion(LINEA3);
+ 
+        assertTrue(linea==null && linea2==null && linea3==null);
     }
     
     /**

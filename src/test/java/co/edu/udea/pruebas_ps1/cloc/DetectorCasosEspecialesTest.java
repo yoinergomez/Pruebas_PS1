@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.edu.udea.pruebas_ps1.comprobar;
+package co.edu.udea.pruebas_ps1.cloc;
 
 import org.junit.Before;
 import org.junit.Test;
