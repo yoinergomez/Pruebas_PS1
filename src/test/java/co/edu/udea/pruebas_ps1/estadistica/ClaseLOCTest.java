@@ -4,45 +4,45 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Es la clase que contiene las pruebas unitarias para la clase Estadistica.java
+ * Es la clase que contiene las pruebas unitarias para la clase ClaseLOC.java
  * @author Frank Castrillón - castrillonfrank114@gmail.com
  * @date 2017/08/19
  * @version v1
  */
-public class EstadisticaTest {
+public class ClaseLOCTest {
     
-    public EstadisticaTest() {
+    public ClaseLOCTest() {
     }
 
     @Test
     public void testCrearConstructorVacio() {
-        Estadistica estadistica = new Estadistica();
+        ClaseLOC estadistica = new ClaseLOC();
         assertEquals(estadistica.getNumeroLineas(), 0);
     }
     
     @Test
     public void testCrearConstructorConParametros() {
-        Estadistica estadistica = new Estadistica("Ejemplo", 5, 5);
+        ClaseLOC estadistica = new ClaseLOC("Ejemplo", 5, 5);
         assertEquals(estadistica.getNumeroMetodos(), 5);
     }
     
     @Test
     public void testComprobarSetMetodo() {
-        Estadistica estadistica = new Estadistica();
+        ClaseLOC estadistica = new ClaseLOC();
         estadistica.setNumeroMetodos(10);
         assertEquals(estadistica.getNumeroMetodos(), 10);
     }
     
     @Test
     public void testComprobarSetLineasCodigo() {
-        Estadistica estadistica = new Estadistica();
+        ClaseLOC estadistica = new ClaseLOC();
         estadistica.setNumeroLineas(10);
         assertEquals(estadistica.getNumeroLineas(), 10);
     }
     
     @Test
     public void testComprobarSetNombre() {
-        Estadistica estadistica = new Estadistica();
+        ClaseLOC estadistica = new ClaseLOC();
         estadistica.setNombre("Ejemplo");
         assertEquals(estadistica.getNombre(), "Ejemplo");
     }
