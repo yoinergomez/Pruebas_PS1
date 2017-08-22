@@ -162,8 +162,14 @@ public class ArchivoIOTest {
         assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
     }
 
+    /**
+     * Prueba para escribir el LOC de una clase en el archivo de Excel
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws URISyntaxException 
+     */
     @Test
-    public void escribirClaseLOCEnExcel() throws IOException,
+    public void testEscribirClaseLOCEnExcel() throws IOException,
             FileNotFoundException, URISyntaxException {
         ClaseLOC clase = new ClaseLOC();
         clase.setNombre("Clase A");
@@ -174,9 +180,15 @@ public class ArchivoIOTest {
         File f = archivoIO.escribirResultadosPrograma(clases);
         assertTrue(f.exists());
     }
-
+    
+    /**
+     * Prueba para escribir el LOC de múltiples clases en el archivo de excel.
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws URISyntaxException 
+     */
     @Test
-    public void escribirResultadosProgramaLOC() throws IOException,
+    public void testEscribirResultadosProgramaLOC() throws IOException,
             FileNotFoundException, URISyntaxException {
         ClaseLOC clase = new ClaseLOC();
         ArrayList<ClaseLOC> clases = new ArrayList();
