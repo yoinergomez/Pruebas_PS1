@@ -129,6 +129,16 @@ public class ContadorLOCTest {
     }
     
     /**
+     * Prueba para retornar una anotacion
+     */
+    @Test
+    public void testRetornarAnotacion() {
+        final String LINEA = "\t @Test";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertEquals("@Test", linea);
+    }
+    
+    /**
      * Prueba para retornar una declaración de una función o clase
      */
     @Test

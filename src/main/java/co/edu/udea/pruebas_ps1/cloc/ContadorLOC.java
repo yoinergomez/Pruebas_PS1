@@ -134,6 +134,9 @@ public class ContadorLOC {
         if (esCierreSentencia(linea)) {
             return null;
         }
+        if(linea.startsWith("@")){
+            return linea;
+        }
         if (!esFinalInstruccion(linea)) {
             multiLinea += linea;
             return "...";
