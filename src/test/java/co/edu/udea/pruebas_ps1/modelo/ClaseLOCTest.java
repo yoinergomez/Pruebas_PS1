@@ -1,5 +1,6 @@
-package co.edu.udea.pruebas_ps1.estadistica;
+package co.edu.udea.pruebas_ps1.modelo;
 
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

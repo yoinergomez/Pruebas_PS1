@@ -5,7 +5,7 @@
  */
 package co.edu.udea.pruebas_ps1.util;
 
-import co.edu.udea.pruebas_ps1.estadistica.ClaseLOC;
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
 import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
 import java.io.File;
 import java.io.FileNotFoundException;

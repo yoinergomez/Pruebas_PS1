@@ -20,7 +20,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import co.edu.udea.pruebas_ps1.estadistica.ClaseLOC;
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
 import java.net.URISyntaxException;
 
 /**

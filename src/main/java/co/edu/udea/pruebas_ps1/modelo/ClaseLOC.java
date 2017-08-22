@@ -1,4 +1,4 @@
-package co.edu.udea.pruebas_ps1.estadistica;
+package co.edu.udea.pruebas_ps1.modelo;
 
 /**
  * Almacena la cantidad de linea de código, cantidad de métodos y el nombre 
