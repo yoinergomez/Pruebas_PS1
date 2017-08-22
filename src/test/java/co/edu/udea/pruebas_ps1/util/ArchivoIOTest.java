@@ -154,19 +154,4 @@ public class ArchivoIOTest {
         assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());   
     }
 
-    
-    /**
-     * Prueba para ignorar un comentario simple del método 'cargarInstruccion' 
-     *
-     * @author Yoiner Gómez - yoiner.gomez22@gmail.com
-     * @date 2017/08/11
-     * @version v1
-     */
-    @Test
-    public void testIgnorarLineaComentario() {
-        final String LINEA = "// Esto es un comentario";
-        archivoIO.cargarInstruccion(LINEA);
-        
-        
-    }
 }

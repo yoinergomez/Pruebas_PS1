@@ -45,10 +45,6 @@ public class ArchivoIO {
 
         return archivo;
     }
-    
-    public void cargarInstruccion(String bloqueTexto) {
-        
-    }
 
     public String leerArchivo(String rutaArchivo) throws FileNotFoundException, 
             ValidacionPS1,IOException {
@@ -65,5 +61,5 @@ public class ArchivoIO {
         b.close();
         return textoArchivo;
     }
-
+    
 }
