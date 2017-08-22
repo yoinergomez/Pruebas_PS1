@@ -75,10 +75,8 @@ public class Analizar {
      * @return
      */
     private boolean esCierreSentencia(String linea) {
-        if ((linea.length() == 1) && (linea.charAt(0) == '}')){
-            return true;
-        }
-        return false;
+        String sub = linea.substring(linea.indexOf("}")+1).trim();
+        return (linea.charAt(0) == '}') || esComentario(sub);
     }
 
     public String cargarInstruccion(String linea) {
@@ -92,6 +90,6 @@ public class Analizar {
         if (esCierreSentencia(linea)) {
             return null;
         }
-        return "";
+        return linea;
     }
 }

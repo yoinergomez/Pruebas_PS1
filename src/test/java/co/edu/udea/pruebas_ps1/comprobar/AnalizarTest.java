@@ -72,15 +72,31 @@ public class AnalizarTest {
     }
     
     /**
-     * Prueba para ignorar un comentario simple del método 'cargarInstruccion'
-     *
-     * @author Yoiner Gómez - yoiner.gomez22@gmail.com
-     * @date 2017/08/11
-     * @version v1
+     * Prueba para ignorar una línea con un tabulado
+     */
+    @Test
+    public void testIgnorarLineaTabulado() {
+        final String LINEA = "\t ";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertNull(linea);
+    }
+    
+    /**
+     * Prueba para ignorar una línea con espacios en blanco
+     */
+    @Test
+    public void testIgnorarLineaEspacios() {
+        final String LINEA = "  ";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertNull(linea);
+    }
+    
+    /**
+     * Prueba para ignorar una línea vacia
      */
     @Test
     public void testIgnorarLineaVacia() {
-        final String LINEA = "\t ";
+        final String LINEA = "";
         String linea = instancia.cargarInstruccion(LINEA);
         assertNull(linea);
     }
@@ -88,10 +104,6 @@ public class AnalizarTest {
     /**
      * Prueba para ignorar un cierre de instrucción, es decir, ignora
      * el cierre de una función o clase '}'
-     *
-     * @author Yoiner Gómez - yoiner.gomez22@gmail.com
-     * @date 2017/08/11
-     * @version v1
      */
     @Test
     public void testIgnorarCierreInstruccion() {
@@ -99,5 +111,18 @@ public class AnalizarTest {
         String linea = instancia.cargarInstruccion(LINEA);
         assertNull(linea);
     }
+    
+    /**
+     * Prueba para ignorar un cierre de instrucción con una sentencia
+     * seguida después del cierre
+     */
+    @Test
+    public void testIgnorarCierreInstruccionConSentencia() {
+        final String LINEA = "\t } int a;";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertNull(linea);
+    }
+    
+
 
 }
