@@ -116,6 +116,13 @@ public class ContadorLOC {
         return false;
     }
 
+    /**
+     * Retorna toda una sentencia en una sola fila, si el argumento no es 
+     * una sentencia completa la función retorna "..." lo que indica que debe
+     * ingresarse una nueva línea
+     * @param linea
+     * @return 
+     */
     public String cargarInstruccion(String linea) {
         linea = linea.trim();
         if (linea.isEmpty()) { //Línea en blanco
