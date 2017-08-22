@@ -7,18 +7,18 @@ package co.edu.udea.pruebas_ps1.estadistica;
  * @date 2017/08/19
  * @version v1
  */
-public class Estadistica {
+public class ClaseLOC {
     private String nombre;
     private int numeroLineas;
     private int numeroMetodos;
 
-    public Estadistica(String nombre, int numeroLineas, int numeroMetodos) {
+    public ClaseLOC(String nombre, int numeroLineas, int numeroMetodos) {
         this.nombre = nombre;
         this.numeroLineas = numeroLineas;
         this.numeroMetodos = numeroMetodos;
     }
 
-    public Estadistica() {
+    public ClaseLOC() {
         this.nombre = null;
         this.numeroLineas = 0;
         this.numeroMetodos = 0;

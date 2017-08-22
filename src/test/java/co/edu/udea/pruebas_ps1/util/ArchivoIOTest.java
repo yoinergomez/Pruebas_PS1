@@ -5,11 +5,13 @@
  */
 package co.edu.udea.pruebas_ps1.util;
 
+import co.edu.udea.pruebas_ps1.estadistica.ClaseLOC;
 import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.After;
@@ -111,9 +113,10 @@ public class ArchivoIOTest {
 
     /**
      * Prueba para leer laprimera línea del archivo
+     *
      * @throws URISyntaxException
      * @throws ValidacionPS1
-     * @throws IOException 
+     * @throws IOException
      */
     @Test
     public void testLeerPrimeraLinea() throws URISyntaxException,
@@ -124,37 +127,78 @@ public class ArchivoIOTest {
         assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
 
     }
-    
+
     /**
      * Prueba para leer un archivo que tiene múltiples lineas
+     *
      * @throws URISyntaxException
      * @throws ValidacionPS1
-     * @throws IOException 
+     * @throws IOException
      */
     @Test
-    public void testLeerMultiplesLineas() throws URISyntaxException, 
-            ValidacionPS1,IOException{
+    public void testLeerMultiplesLineas() throws URISyntaxException,
+            ValidacionPS1, IOException {
         String ejemplo = "Primera linea-Segunda linea-Tercera linea";
         String ruta = corregirPath("archivoConMultiplesLineas.txt");
         String resultado = archivoIO.leerArchivo(ruta);
-        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());   
+        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
     }
-    
+
     /**
      * Prueba para leer un archivo que tiene múltiples líneas ycon la inclusión
-     * de líneas en blanco.Se espera con esta prueba que el programa omita las 
+     * de líneas en blanco.Se espera con esta prueba que el programa omita las
      * lineas en blanco.
+     *
      * @throws URISyntaxException
      * @throws ValidacionPS1
-     * @throws IOException 
+     * @throws IOException
      */
     @Test
-    public void testLeerDatosConLineasEnBlanco() throws URISyntaxException, 
-            ValidacionPS1,IOException{
+    public void testLeerDatosConLineasEnBlanco() throws URISyntaxException,
+            ValidacionPS1, IOException {
         String ejemplo = "Primera linea-Segunda linea-Tercera linea";
         String ruta = corregirPath("archivoConMultiplesLineas.txt");
         String resultado = archivoIO.leerArchivo(ruta);
-        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());   
+        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
+    }
+
+    @Test
+    public void escribirClaseLOCEnExcel() throws IOException,
+            FileNotFoundException, URISyntaxException {
+        ClaseLOC clase = new ClaseLOC();
+        clase.setNombre("Clase A");
+        clase.setNumeroMetodos(2);
+        clase.setNumeroLineas(20);
+        ArrayList<ClaseLOC> clases = new ArrayList();
+        clases.add(clase);
+        File f = archivoIO.escribirResultadosPrograma(clases);
+        assertTrue(f.exists());
+    }
+
+    @Test
+    public void escribirResultadosProgramaLOC() throws IOException,
+            FileNotFoundException, URISyntaxException {
+        ClaseLOC clase = new ClaseLOC();
+        ArrayList<ClaseLOC> clases = new ArrayList();
+        clase.setNombre("Clase A");
+        clase.setNumeroMetodos(2);
+        clase.setNumeroLineas(23);
+        clases.add(clase);
+
+        clase = new ClaseLOC();
+        clase.setNombre("Clase B");
+        clase.setNumeroMetodos(4);
+        clase.setNumeroLineas(38);
+        clases.add(clase);
+        
+        clase = new ClaseLOC();
+        clase.setNombre("Clase C");
+        clase.setNumeroMetodos(3);
+        clase.setNumeroLineas(44);
+        clases.add(clase);
+        
+        File f = archivoIO.escribirResultadosPrograma(clases);
+        assertTrue(f.exists());
     }
 
 }
