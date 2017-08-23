@@ -5,16 +5,14 @@
  */
 package co.edu.udea.pruebas_ps1.principal;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
+ * Es la clase para hacer los test de la clase Main.
  *
- * @author frank
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/11
+ * @version v1
  */
 public class PrincipalTest {
     

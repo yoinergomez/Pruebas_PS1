@@ -1,5 +1,7 @@
 package co.edu.udea.pruebas_ps1.cloc;
 
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+
 /**
  * Es la clase encargada de verificar si una sentencia es una clase o un método
  *
@@ -21,14 +23,21 @@ public class ContadorLOC {
      * @param linea a comprobar
      * @return true si es una clase o false en otro caso
      */
-    public boolean comprobarClase(String linea) {
+    
+    /**
+     * 
+     * @param linea
+     * @return 
+     */
+    public ClaseLOC comprobarClase(String linea) {
+        ClaseLOC loc = null;
         String aux[] = linea.split(" ");
         if (aux[0].equals("class")) {
-            return true;
+            loc = new ClaseLOC(aux[1], 1, 0);
         } else if (aux[1].equals("class")) {
-            return true;
+            loc = new ClaseLOC(aux[2], 1, 0);
         }
-        return false;
+        return loc;
     }
 
     /**
@@ -46,7 +55,6 @@ public class ContadorLOC {
             if (end != -1) {
                 aux = aux + "{";
             }
-            System.out.println("aux:" + aux);
             aux = aux.replaceAll("\\s+", "");
         } else {
             aux = linea.replaceAll("\\s+", "");

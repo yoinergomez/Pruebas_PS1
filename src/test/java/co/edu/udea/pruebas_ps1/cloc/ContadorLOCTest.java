@@ -1,5 +1,6 @@
 package co.edu.udea.pruebas_ps1.cloc;
 
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -25,17 +26,26 @@ public class ContadorLOCTest {
 
     @Test
     public void testComprobarClase() {
-        assertTrue(instancia.comprobarClase("public class Ejemplo"));
+        ClaseLOC loc = instancia.comprobarClase("public class Ejemplo");
+        assertEquals("Ejemplo", loc.getNombre());
     }
 
     @Test
     public void testComprobarClaseErronea() {
-        assertFalse(instancia.comprobarClase("public static void Cuenta"));
+        ClaseLOC loc = instancia.comprobarClase("public static void Cuenta");
+        assertEquals(null, loc);
     }
 
     @Test
     public void testComprobarClaseSinAlcance() {
-        assertTrue(instancia.comprobarClase("class Cuenta"));
+        ClaseLOC loc = instancia.comprobarClase("class Cuenta");
+        assertEquals("Cuenta", loc.getNombre());
+    }
+    
+    @Test
+    public void testComprobarNumeroLineasClase() {
+        ClaseLOC loc = instancia.comprobarClase("class Otro");
+        assertEquals(1, loc.getNumeroLineas());
     }
 
     @Test
