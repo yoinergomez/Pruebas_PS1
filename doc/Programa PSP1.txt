@@ -1,0 +1,1428 @@
+package co.edu.udea.pruebas_ps1.cloc;
+
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+
+/**
+ * Es la clase encargada de verificar si una sentencia es una clase o un método
+ *
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/19
+ * @version v1
+ */
+public class ContadorLOC {
+
+    private String multiLinea;
+
+    public ContadorLOC() {
+        this.multiLinea = new String();
+    }
+
+    /**
+     * Verifica si una sentencia es un clase
+     *
+     * @param linea a comprobar
+     * @return true si es una clase o false en otro caso
+     */
+    /**
+     *
+     * @param linea
+     * @return
+     */
+    public ClaseLOC comprobarClase(String linea) {
+        ClaseLOC loc = null;
+//        if(linea.startsWith("@")){
+//            return loc;
+//        }
+//        String aux[] = linea.split(" ");
+//        int ubicacion;   
+//        if (aux[0].equals("class")) {
+//            ubicacion = aux[1].indexOf("{");
+//            if(ubicacion != -1){
+//                aux[1] = aux[1].substring(0, ubicacion);
+//            }
+//            loc = new ClaseLOC(aux[1], 1, 0);
+//        } else if (aux[1].equals("class")) {
+//            ubicacion = aux[1].indexOf("{");
+//            if(ubicacion != -1){
+//                aux[2] = aux[2].substring(0, ubicacion);
+//            }
+//            loc = new ClaseLOC(aux[2], 1, 0);
+//        }
+        String str = linea;
+        int indexClass = str.indexOf("class ");
+        if (indexClass != -1) {
+            int inicioNombreClase = indexClass + 6;
+            int finNombreClase = str.length();
+            if (str.indexOf(" ", inicioNombreClase) != -1) {
+                finNombreClase = str.indexOf(" ", inicioNombreClase);
+            }
+            str = str.substring(inicioNombreClase, finNombreClase);
+            if (str.endsWith("{")) { // Eliminar el caracter si NombreClase{
+                str = str.substring(0, str.length() - 1);
+            }
+            loc = new ClaseLOC(str, 1, 0);
+        }
+        return loc;
+    }
+
+    /**
+     * Método para saber si una linea es el inicio de una clase
+     *
+     * @param linea
+     * @return true si es el inicio y false en caso contrario
+     */
+    public boolean esInicioClase(String linea) {
+        String aux[] = linea.split(" ");
+        return aux[0].equals("package");
+    }
+
+    /**
+     * Verifica si una linea es un método
+     *
+     * @param linea a verificar
+     * @return true si es un meétodo o false en caso contrario
+     */
+    public boolean comprobarMetodo(String linea) {
+        String aux;
+        if (linea.contains("throws")) {
+            int posicion = linea.indexOf("throws");
+            int end = linea.indexOf("{");
+            aux = linea.substring(0, posicion);
+            if (end != -1) {
+                aux = aux + "{";
+            }
+            aux = aux.replaceAll("\\s+", "");
+        } else {
+            aux = linea.replaceAll("\\s+", "");
+        }
+        return aux.contains("){");
+    }
+
+    /**
+     * Comprueba si el argumento 'linea' es un comentario
+     *
+     * @param linea
+     * @return
+     */
+    private boolean esComentario(String linea) {
+        if (linea.startsWith("//")) {
+            return true;
+        }
+        if (linea.startsWith("/*")) {
+            return true;
+        }
+        if (linea.startsWith("*/")) {
+            return true;
+        }
+        return linea.startsWith("*");
+    }
+
+    /**
+     * Comprueba si el argumento 'linea' es un cierre de instrucción, es decir,
+     * ignora el cierre de una función o clase '}'
+     *
+     * @param linea
+     * @return
+     */
+    private boolean esCierreSentencia(String linea) {
+        String sub = linea.substring(linea.indexOf("}") + 1).trim();
+        return (linea.charAt(0) == '}') || esComentario(sub);
+    }
+
+    /**
+     * Comprueba si el argumento 'linea' es el final de una sentencia
+     * finalizando con un ";" o "{" siendo el último, el caso para las clases y
+     * métodos
+     *
+     * @param linea
+     * @return
+     */
+    private boolean esFinalInstruccion(String linea) {
+
+        if (esDeclaracionArreglo(linea)) {
+            return false;
+        }
+        return linea.endsWith("{") || linea.endsWith(";");
+    }
+
+    /**
+     * Verifica si el argumento ingresado es una declaración de un arreglo
+     *
+     * @param linea
+     * @return
+     */
+    private boolean esDeclaracionArreglo(String linea) {
+        String lineaSinEspacios = linea.replaceAll("\\s", "");
+        int index = lineaSinEspacios.indexOf("{") - 1;
+        if (index >= 0) {
+            return lineaSinEspacios.substring(index).startsWith("=");
+        }
+        return false;
+    }
+
+    /**
+     * Retorna toda una sentencia en una sola fila, si el argumento no es una
+     * sentencia completa la función retorna "..." lo que indica que debe
+     * ingresarse una nueva línea
+     *
+     * @param linea
+     * @return
+     */
+    public String cargarInstruccion(String linea) {
+        linea = linea.trim();
+        if (linea.isEmpty()) { //Línea en blanco
+            return null;
+        }
+        if (esComentario(linea)) {
+            return null;
+        }
+        if (esCierreSentencia(linea)) {
+            return null;
+        }
+        if (linea.startsWith("@")) {
+            return linea;
+        }
+        if (!esFinalInstruccion(linea)) {
+            multiLinea += linea;
+            return "...";
+        } else if (multiLinea != null) {
+            linea = multiLinea + linea;
+            multiLinea = "";
+        }
+        return linea;
+    }
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps1.cloc;
+
+import java.util.Stack;
+
+/**
+ * Clase responsable de detectar lineas de código que contienen dos o más
+ * instrucciones
+ *
+ * @author Jhonatan Orozco Blandón
+ * @date 2017/08/21
+ * @version 1
+ */
+public class DetectorCasosEspeciales {
+
+    /**
+     * Método que se encarga de detectar si una línea de código continen
+     * múltiple declariación de variables del mismo tipo
+     *
+     * @param linea
+     * @return El número de instrucciones que contiene la línea.
+     */
+    public int detectarMultipleCreacionVariables(String linea) {
+        int numeroCaracteres = linea.length();
+        int instrucciones = 0;
+        Stack<Character> pila = new Stack<>();
+        boolean textoEntreComillas=false;
+        for (int i = 0; i < numeroCaracteres; i++) {
+            char caracter = linea.charAt(i);
+            switch (caracter) {
+                case '"':
+                    textoEntreComillas=!textoEntreComillas;
+                    break;
+                case '(':
+                case '{':
+                case '[':
+                    if(!textoEntreComillas){
+                        pila.push(caracter);
+                    } 
+                    break;
+                case ')':
+                case '}':
+                case ']':
+                    if(!textoEntreComillas){
+                        pila.pop();
+                    }
+                    break;
+                case ',':
+                case ';':
+                    if (pila.isEmpty()) {
+                        instrucciones++;
+                    }
+                    break;
+            }
+        }
+        if (!pila.isEmpty()) {
+            return 0;
+        }
+        return instrucciones;
+    }
+
+    
+    /**
+     * Método que detecta si se trata de una línea con la palabra reservada for 
+     * y además, reconoce si alguna de las intrucciones del for se encuentra 
+     * vacia. Se considera el for sin ninguna instrucción como una línea de 
+     * código.
+     * @param linea
+     * @return El número de instrucciones de for
+     */
+    public int detectarInstruccionFor(String linea) {
+        boolean existefor = linea.contains("for");
+        int numeroCaracteres = linea.length();
+        int instrucciones=0;
+        String resultado = "";
+        boolean bandera=false;
+        if (existefor) {
+            for (int i = 0; i < numeroCaracteres; i++) {
+                char caracter = linea.charAt(i);
+                switch (caracter) {
+                    case '(':
+                        bandera = true;
+                        break;
+                    case ')':
+                        bandera=false;
+                        break;
+                    default:
+                        if(bandera){
+                            resultado=resultado.concat(String.valueOf(caracter));
+                        }
+                }
+            }
+            bandera=false;
+            String[] partes=resultado.split(";");
+            int numeroPartes=partes.length;
+            for (int i = 0; i < numeroPartes; i++) {
+                partes[i]=partes[i].replaceAll("\\s+","");
+                if(!partes[i].isEmpty()){
+                    instrucciones++;
+                    bandera=true;
+                }
+            }
+            if(!bandera){
+                return 1;
+            }
+        }
+        return instrucciones;
+
+    }
+}
+
+package co.edu.udea.pruebas_ps1.modelo;
+
+/**
+ * Almacena la cantidad de linea de código, cantidad de métodos y el nombre 
+ * de una clase
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/19
+ * @version v1
+ */
+public class ClaseLOC {
+    private String nombre;
+    private int numeroLineas;
+    private int numeroMetodos;
+
+    public ClaseLOC(String nombre, int numeroLineas, int numeroMetodos) {
+        this.nombre = nombre;
+        this.numeroLineas = numeroLineas;
+        this.numeroMetodos = numeroMetodos;
+    }
+
+    public ClaseLOC() {
+        this.nombre = null;
+        this.numeroLineas = 0;
+        this.numeroMetodos = 0;
+    }
+    
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getNumeroLineas() {
+        return numeroLineas;
+    }
+
+    public void setNumeroLineas(int numeroLineas) {
+        this.numeroLineas = numeroLineas;
+    }
+
+    public int getNumeroMetodos() {
+        return numeroMetodos;
+    }
+
+    public void setNumeroMetodos(int numeroMetodos) {
+        this.numeroMetodos = numeroMetodos;
+    }
+    
+}
+
+package co.edu.udea.pruebas_ps1.principal;
+
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+import co.edu.udea.pruebas_ps1.util.ArchivoIO;
+import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import org.apache.commons.lang.SystemUtils;
+
+/**
+ * Es la clase principal que se encarga de ejecutar el proyecto.
+ *
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/11
+ * @version v1
+ */
+public class Principal {
+
+    /**
+     * @param args the command line arguments
+     * @throws java.io.IOException
+     * @throws co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1
+     */
+    public static void main(String[] args) throws IOException, ValidacionPS1, 
+            FileNotFoundException, URISyntaxException {
+            ArchivoIO archivo = new ArchivoIO();   
+            InputStreamReader isr = new InputStreamReader(System.in);
+            BufferedReader br = new BufferedReader(isr);
+            System.out.println("Introduce el path del archivo de excel.");
+            System.out.println("ejemplo: C:\\Users\\Laptop\\Downloads\\archivo.xls: ");
+            System.out.println("path: ");
+            
+            String path = br.readLine();
+            //String path = "C:\\Users\\Esteban\\workspace\\Pruebas_PS1\\src\\main\\resources\\archivoConMultiplesClasesMetodos.txt";
+            ArrayList<ClaseLOC> resultado = archivo.leerArchivo(path);
+            File f = archivo.escribirResultadosPrograma(resultado);
+            System.out.println("El archivo creado quedo almacenado en la siguiente ruta:\n"+f.getAbsolutePath());
+            
+            //System.out.println("Revise los resultados en la ruta:" + f.getAbsolutePath());
+            
+            isr.close();
+            br.close();        
+    }
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps1.util.excepcion;
+
+/**
+ * Es la clase encargada demanejar los errores concernientes a las reglas del
+ * negocio
+ * @author Jhonatan Orozco Blandón
+ * @date 2017/08/21
+ * @version 1
+ */
+public class ValidacionPS1 extends Exception{
+
+    /**
+     * Constructor de la clase.
+     * @param arg0 El mensaje asociado a la excepción.
+     */
+    public ValidacionPS1(String arg0) {
+        super(arg0);
+    }
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps1.util;
+
+import co.edu.udea.pruebas_ps1.cloc.ContadorLOC;
+import co.edu.udea.pruebas_ps1.cloc.DetectorCasosEspeciales;
+import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+import java.net.URISyntaxException;
+
+/**
+ * Clase encargada de manejar la lectura y escritura en archivos
+ *
+ * @author Jhonatan Orozco Blandón
+ * @date 2017/08/21
+ * @version 1
+ *
+ */
+public class ArchivoIO {
+
+    /**
+     * Encuentra el archivo dependiendo la ruta, además de validar de que el
+     * archivo cumpla con la extensión .txt
+     *
+     * @param rutaArchivo La ruta del archivo
+     * @return El archivo que se encontró de acuerdo a la ruta.
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1
+     */
+    private int numeroLineas;
+
+    /**
+     * Método que encuentra el archivo buscado por medio de la ruta y que
+     * verifica que la extensión sea .txt
+     *
+     * @param rutaArchivo
+     * @return
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1
+     */
+    public File encontrarArchivo(String rutaArchivo) throws FileNotFoundException,
+            ValidacionPS1 {
+        String extArchivo;
+        File archivo = new File(rutaArchivo);
+        if (!archivo.exists()) {
+            throw new FileNotFoundException("El archivo no se puede abrir");
+        }
+        extArchivo = FilenameUtils.getExtension(archivo.getName());
+        if ("txt".compareTo(extArchivo) != 0) {
+            throw new ValidacionPS1("La extensión es inválida");
+        }
+
+        return archivo;
+    }
+
+    /**
+     * Método que lee los datos de archivo que se ingresa por medio de la ruta
+     *
+     * @param rutaArchivo
+     * @return EL texto que se encuentra en el archivo
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1
+     * @throws IOException
+     */
+    public ArrayList<ClaseLOC> leerArchivo(String rutaArchivo)
+            throws FileNotFoundException, ValidacionPS1, IOException {
+        DetectorCasosEspeciales casoEspecial = new DetectorCasosEspeciales();
+        ArrayList<ClaseLOC> clases = new ArrayList<>();
+        ContadorLOC loc = new ContadorLOC();
+        File archivo = encontrarArchivo(rutaArchivo);
+        FileReader f = new FileReader(archivo);
+        BufferedReader b = new BufferedReader(f);
+        String textoArchivo = "";
+        ClaseLOC actual = null;
+        ClaseLOC auxiliar = null;
+        numeroLineas = 0;
+        String cadena;
+        String linea;
+        int aux = 0;
+        while ((cadena = b.readLine()) != null) {
+            aux = 0;
+            //textoArchivo = textoArchivo.concat(cadena);
+            linea = loc.cargarInstruccion(cadena);
+            if (linea != null) {
+                if (!linea.equals("...")) {
+                    if (loc.esInicioClase(linea)) {
+                        if (actual != null) {
+                            actual.setNumeroLineas(numeroLineas);
+                            clases.add(actual);
+                            numeroLineas = 0;
+                        }
+                        actual = new ClaseLOC();
+                        numeroLineas++;
+                    } else {
+                        auxiliar = loc.comprobarClase(linea);
+                        if (auxiliar != null) {
+                            actual.setNombre(auxiliar.getNombre());
+                            actual.setNumeroLineas(auxiliar.getNumeroLineas());
+                            numeroLineas++;
+                        } else {
+                            if (loc.comprobarMetodo(linea)) {
+                                if (actual != null) {
+                                    actual.setNumeroMetodos(
+                                            actual.getNumeroMetodos() + 1);
+                                    numeroLineas++;
+                                }
+                            } else {
+                                aux = casoEspecial.detectarInstruccionFor(linea);
+                                if (aux != 0) {
+                                    numeroLineas = numeroLineas + aux;
+                                } else {
+                                    aux = casoEspecial.
+                                            detectarMultipleCreacionVariables(linea);
+                                    if (aux != 0) {
+                                        numeroLineas = numeroLineas + aux;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                textoArchivo = "";
+            }
+        }
+        b.close();
+        if (clases.isEmpty()) {
+            if (actual != null) {
+                actual.setNumeroLineas(numeroLineas);
+                clases.add(actual);
+            }
+        } else if (actual != null) {
+            actual.setNumeroLineas(numeroLineas);
+            clases.add(actual);
+        }
+        return clases;
+    }
+
+    /**
+     * Método que escribe en la hoja de Excel el objeto de la clase ClaseLOC
+     *
+     * @param s
+     * @param clase
+     * @param numeroFilas
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public void escribirResultadosClaseLOC(Sheet s, ClaseLOC clase, int numeroFilas)
+            throws FileNotFoundException, IOException, URISyntaxException {
+        int numeroCeldas = 0;
+        Row r = s.createRow(numeroFilas);
+        Cell c = r.createCell(numeroCeldas);
+        c.setCellValue(clase.getNombre());
+        numeroCeldas++;
+        c = r.createCell(numeroCeldas);
+        c.setCellValue(clase.getNumeroMetodos());
+        numeroCeldas++;
+        c = r.createCell(numeroCeldas);
+        c.setCellValue(clase.getNumeroLineas());
+    }
+
+    /**
+     * Método que crea el encabezado en la hoja de Excel
+     *
+     * @param s
+     */
+    private void crearEncabezadoExcel(Sheet s) {
+        int numeroCeldas = 0;
+        Row r = s.createRow(0);
+        Cell c = r.createCell(numeroCeldas);
+        c.setCellValue("Nombre de la clase");
+        numeroCeldas++;
+        c = r.createCell(numeroCeldas);
+        c.setCellValue("Número de métodos");
+        numeroCeldas++;
+        c = r.createCell(numeroCeldas);
+        c.setCellValue("Tamaño de la clase");
+        numeroCeldas++;
+        c = r.createCell(numeroCeldas);
+        c.setCellValue("Total");
+    }
+
+    /**
+     * Método que escribe en la hoja de Excel la lista de objetos de tipo
+     * ClaseLOC
+     *
+     * @param clases
+     * @return
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws URISyntaxException
+     */
+    public File escribirResultadosPrograma(ArrayList<ClaseLOC> clases) throws
+            IOException, FileNotFoundException, URISyntaxException {
+        int numeroVariables = clases.size();
+        int totalLineas = 0;
+        Workbook w = new HSSFWorkbook();
+        Sheet s = w.createSheet();
+        String rutaProyecto;
+        crearEncabezadoExcel(s);
+        for (int i = 0; i < numeroVariables; i++) {
+            ClaseLOC clase = clases.get(i);
+            totalLineas = totalLineas + clase.getNumeroLineas();
+            escribirResultadosClaseLOC(s, clase, i + 1);
+        }
+        Row r = s.createRow(numeroVariables + 1);
+        Cell c = r.createCell(3);
+        c.setCellValue(totalLineas);
+        ajustarColumnasExcel(s);
+
+        rutaProyecto = ArchivoIO.class.getProtectionDomain().
+                getCodeSource().getLocation().toURI().getPath();
+        Date date = new Date();
+
+        String nombreArchivo = "resultado " + date.getTime()
+                + ".xls";
+        rutaProyecto = rutaProyecto.concat(nombreArchivo);
+        FileOutputStream outputStream = new FileOutputStream(rutaProyecto);
+        w.write(outputStream);
+        File f = new File(rutaProyecto);
+        return f;
+    }
+
+    /**
+     * Método que ajusta las columnas del Excel de acuerdo a lo longitud de las
+     * palabras que se guardan en la hoja.
+     *
+     * @param s
+     */
+    private void ajustarColumnasExcel(Sheet s) {
+        s.autoSizeColumn(0);
+        s.autoSizeColumn(1);
+        s.autoSizeColumn(2);
+        s.autoSizeColumn(3);
+    }
+}
+
+package co.edu.udea.pruebas_ps1.cloc;
+
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.Before;
+
+/**
+ * Es la clase que contiene las pruebas unitarias para la clase ContadorLOC.java
+ *
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/19
+ * @version v1
+ */
+public class ContadorLOCTest {
+
+    ContadorLOC instancia;
+
+    public ContadorLOCTest() {
+    }
+
+    @Before
+    public void setUp() {
+        instancia = new ContadorLOC();
+    }
+    
+    /**
+     *Pruebas para comprobar si una linea es el inicio de una clase (caso feliz)
+     */
+    @Test
+    public void testComprobarInicioClase() {
+        boolean resultado = instancia.esInicioClase("package "
+                + "co.edu.udea.pruebas_ps1.cloc;");
+        assertTrue(resultado);
+    }
+    
+    /**
+     *Pruebas para comprobar si una linea no es el inicio de una clase
+     */
+    @Test
+    public void testComprobarInicioClaseErronea() {
+        boolean resultado = instancia.esInicioClase("co.edu.udea.pruebas_ps1.cloc;");
+        assertFalse(resultado);
+    }
+    
+    /**
+     * Pruebas para comprobar si una linea es una clase (caso feliz)
+     */
+    @Test
+    public void testComprobarClase() {
+        ClaseLOC loc = instancia.comprobarClase("public class Ejemplo");
+        assertEquals("Ejemplo", loc.getNombre());
+    }
+    
+    /**
+     * Pruebas para comprobar si una linea no es una clase
+     */
+    @Test
+    public void testComprobarClaseErronea() {
+        ClaseLOC loc = instancia.comprobarClase("public static void Cuenta");
+        assertEquals(null, loc);
+    }
+
+    /**
+     * Prueba para comprobar una linea que es una clase pero no esta definido 
+     * el alcance
+     */
+    @Test
+    public void testComprobarClaseSinAlcance() {
+        ClaseLOC loc = instancia.comprobarClase("class Cuenta");
+        assertEquals("Cuenta", loc.getNombre());
+    }
+    
+    /**
+     * Comprobar cuando el nombre de una clase esta seguido de un abre corchete
+     */
+    @Test
+    public void testComprobarClaseConCorchete() {
+        ClaseLOC loc = instancia.comprobarClase("class Cuenta{");
+        assertEquals("Cuenta", loc.getNombre());
+    }
+    
+    /**
+     * Comprobar que el método guarde el número de lineas cuando detecta que 
+     * es una clase
+     */
+    @Test
+    public void testComprobarNumeroLineasClase() {
+        ClaseLOC loc = instancia.comprobarClase("class Otro");
+        assertEquals(1, loc.getNumeroLineas());
+    }
+    
+    /**
+     * Comprueba si una linea es un método (caso feliz)
+     */
+    @Test
+    public void testComprobarMetodo() {
+        assertTrue(instancia.comprobarMetodo("public static void hacerAlgo(){"));
+    }
+    
+    /**
+     * Comprueba un método cuando hay espacios después del cierre del argumento
+     */
+    @Test
+    public void testComprobarMetodoConEspacios() {
+        assertTrue(instancia.comprobarMetodo("public static void "
+                + "hacer(String tempo)   {"));
+    }
+    
+    /**
+     * Comprueba un método que tiene throws
+     */
+    @Test
+    public void testComprobarMetodoConThrows() {
+        assertTrue(instancia.comprobarMetodo("public void writeList()"
+                + "  throws IndexOutOfBoundsException, IOException   {"));
+    }
+
+    /**
+     * Comprueba un método contruido erroneamente
+     */
+    @Test
+    public void testComprobarMetodoConMalThrows() {
+        assertFalse(instancia.comprobarMetodo("public void writeList()"
+                + "  throws IndexOutOfBoundsException, IOException   "));
+    }
+
+    /**
+     * Prueba para ignorar un comentario simple del método 'cargarInstruccion'
+     */
+    @Test
+    public void testIgnorarComentario() {
+        final String LINEA = "       // Esto es un comentario";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertNull(linea);
+    }
+    
+    /**
+     * Prueba para ignorar un bloque de comentario del método 'cargarInstruccion'
+     */
+    @Test
+    public void testIgnorarBloqueComentario() {
+        final String LINEA = "       /* Esto es un comentario";
+        final String LINEA2 = "      *  ";
+        final String LINEA3 = "      */ ";
+        String linea = instancia.cargarInstruccion(LINEA);
+        String linea2 = instancia.cargarInstruccion(LINEA2);
+        String linea3 = instancia.cargarInstruccion(LINEA3);
+ 
+        assertTrue(linea==null && linea2==null && linea3==null);
+    }
+    
+    /**
+     * Prueba para ignorar una línea con espacios en blanco
+     */
+    @Test
+    public void testIgnorarLineaEspacios() {
+        final String LINEA = "  ";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertNull(linea);
+    }
+    
+    /**
+     * Prueba para ignorar una línea vacia
+     */
+    @Test
+    public void testIgnorarLineaVacia() {
+        final String LINEA = "";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertNull(linea);
+    }
+    
+    /**
+     * Prueba para ignorar un cierre de instrucción, es decir, ignora
+     * el cierre de una función o clase '}'
+     */
+    @Test
+    public void testIgnorarCierreInstruccion() {
+        final String LINEA = "\t } ";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertNull(linea);
+    }
+    
+    /**
+     * Prueba para ignorar un cierre de instrucción con una sentencia
+     * seguida después del cierre
+     */
+    @Test
+    public void testIgnorarCierreInstruccionConSentencia() {
+        final String LINEA = "\t } int a;";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertNull(linea);
+    }
+    
+    /**
+     * Prueba para retornar una anotacion
+     */
+    @Test
+    public void testRetornarAnotacion() {
+        final String LINEA = "\t @Test";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertEquals("@Test", linea);
+    }
+    
+    /**
+     * Prueba para retornar una declaración de una función o clase
+     */
+    @Test
+    public void testRetornarAperturaSimple() {
+        final String LINEA = "\t\t public void testRetornarAperturaSimple() {\t";
+        String linea = instancia.cargarInstruccion(LINEA);
+        assertEquals("public void testRetornarAperturaSimple() {", linea);
+    }
+    
+    /**
+     * Prueba para retornar una declaración de una función o clase
+     * definida en múltiples líneas
+     */
+    @Test
+    public void testRetornarAperturaMultilinea() {
+        final String LINEA = "public void testRetornarAperturaSimple()throws"
+                + " FileNotFoundException,ValidacionPS0, URISyntaxException {";
+        String lineas[] = {"\t\t public void testRetornarAperturaSimple() \t",
+            "\t throws FileNotFoundException,",
+            " ValidacionPS0, URISyntaxException {"
+        };
+        String res1 = instancia.cargarInstruccion(lineas[0]);
+        String res2 = instancia.cargarInstruccion(lineas[1]);
+        String res3 = instancia.cargarInstruccion(lineas[2]);
+
+        assertTrue(res1.equals("...") && res2.equals("...") && res3.equals(LINEA));
+    }
+    
+    /**
+     * Prueba para retornar una declaración de un arreglo
+     * definida en múltiples líneas
+     */
+    @Test
+    public void testRetornarDeclaracionArreglo() {
+        final String LINEA = "String[ ] nombre = {\"María\",\"Gerson\"};";
+        String lineas[] = {"\t\t String[ ] nombre = { \t",
+            "\t \"María\",",
+            " \"Gerson\"};"
+        };
+        String res1 = instancia.cargarInstruccion(lineas[0]);
+        String res2 = instancia.cargarInstruccion(lineas[1]);
+        String res3 = instancia.cargarInstruccion(lineas[2]);
+    
+        assertTrue(res1.equals("...") && res2.equals("...") && res3.equals(LINEA));
+    }
+
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps1.cloc;
+
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ * Clase que contienen los casos de prueba para DectectorCasosEspeciales
+ * @author Jhonatan Orozco Blandón
+ * @date 2017/08/21
+ * @version 1
+ */
+public class DetectorCasosEspecialesTest {
+    
+     private DetectorCasosEspeciales detector;
+
+    @Before
+    public void inicializar() {
+        detector = new DetectorCasosEspeciales();
+    }
+    
+    /**
+     * Prueba de una línea de código con mútiple declaración de variables cada
+     * una separada por comas.
+     */
+    @Test
+    public void testDetectarMultipleCreacionVariables(){
+        String linea="int x,y,z;";
+        int numeroInstrucciones=detector.detectarMultipleCreacionVariables(linea);
+        assertEquals(3,numeroInstrucciones );
+    }
+    
+    
+    /**
+     * Prueba de una línea de código que inicializa una variable por medio de 
+     * un método que contiene más de un parámetro 
+     */
+    @Test
+    public void testComaEntreParentesis(){
+        String linea="int x= Integer.sum(5,10);";
+        int numeroInstrucciones=detector.detectarMultipleCreacionVariables(linea);
+        assertEquals(1,numeroInstrucciones );
+    }
+    
+    /**
+     * Prueba de una línea de código con declaración de variables del mismo tipo
+     * pero con diferente inicialización.
+     */
+    @Test
+    public void testDInicializacionDeDistintoTipo(){
+        String linea="int x= Integer.sum(5,10), y=6;";
+        int numeroInstrucciones=detector.detectarMultipleCreacionVariables(linea);
+        assertEquals(2,numeroInstrucciones );
+    }
+    
+    /**
+     * Prueba con una línea de código que incializa un vector por medio de llaves.
+     */
+    @Test
+    public void testInicializacionConLLaves(){
+        String linea="int[] a={1,2},b=new int[]{},c={3,4,5};";
+        int numeroInstrucciones=detector.detectarMultipleCreacionVariables(linea);
+        assertEquals(3,numeroInstrucciones);
+    }
+    
+    
+    /**
+     * Prueba con una línea de código distinta a la declaración de variables. En
+     * este caso en particular se prueba con la definición de un método. Se espera
+     * que retorne cero, ya que ese tipo de línea no le compete.
+     */
+    @Test
+    public void testLineaDistintaADeclaracionVariables(){
+         String linea="public void escribirResultadosClaseLOC"
+                 + "(Sheet s, ClaseLOC clase, int numeroFilas)\n" +
+"            throws FileNotFoundException, IOException, URISyntaxException {;";
+        int numeroInstrucciones=detector.detectarMultipleCreacionVariables(linea);
+        assertEquals(0,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for.
+     */
+    @Test
+    public void testDetectarInstruccionFor(){
+        String linea="for(int i=0;i<3;i++){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(3,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for sin la inicialización de 
+     * la varable controladora.
+     */
+    @Test
+    public void testForSinInicializacion(){
+        String linea="for(  ;i<3;i++){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(2,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for sin el incremento de 
+     * la varable controladora.
+     */
+    @Test
+    public void testForSinIncremento(){
+        String linea="for( int i=0 ;i<3;  ){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(2,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for con solomante la condición
+     * de parada del ciclo.
+     */
+    @Test
+    public void testForConSoloElCondicional(){
+        String linea="for( ;i<10 ; ){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(1,numeroInstrucciones);
+    }
+    
+    /**
+     * Prueba con una línea de código que tiene un for sin instrucciones.
+     */
+    @Test
+    public void testForSinInstrucciones(){
+        String linea="for( ; ;){";
+        int numeroInstrucciones=detector.detectarInstruccionFor(linea);
+        assertEquals(1,numeroInstrucciones);
+    }
+    
+}
+
+package co.edu.udea.pruebas_ps1.modelo;
+
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ * Es la clase que contiene las pruebas unitarias para la clase ClaseLOC.java
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/19
+ * @version v1
+ */
+public class ClaseLOCTest {
+    
+    public ClaseLOCTest() {
+    }
+
+    @Test
+    public void testCrearConstructorVacio() {
+        ClaseLOC estadistica = new ClaseLOC();
+        assertEquals(estadistica.getNumeroLineas(), 0);
+    }
+    
+    @Test
+    public void testCrearConstructorConParametros() {
+        ClaseLOC estadistica = new ClaseLOC("Ejemplo", 5, 5);
+        assertEquals(estadistica.getNumeroMetodos(), 5);
+    }
+    
+    @Test
+    public void testComprobarSetMetodo() {
+        ClaseLOC estadistica = new ClaseLOC();
+        estadistica.setNumeroMetodos(10);
+        assertEquals(estadistica.getNumeroMetodos(), 10);
+    }
+    
+    @Test
+    public void testComprobarSetLineasCodigo() {
+        ClaseLOC estadistica = new ClaseLOC();
+        estadistica.setNumeroLineas(10);
+        assertEquals(estadistica.getNumeroLineas(), 10);
+    }
+    
+    @Test
+    public void testComprobarSetNombre() {
+        ClaseLOC estadistica = new ClaseLOC();
+        estadistica.setNombre("Ejemplo");
+        assertEquals(estadistica.getNombre(), "Ejemplo");
+    }
+    
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps1.principal;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import org.apache.commons.lang.SystemUtils;
+import org.junit.Test;
+
+/**
+ * Es la clase para hacer los test de la clase Main.
+ *
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/11
+ * @version v1
+ */
+public class PrincipalTest {
+    
+    public PrincipalTest() {
+    }
+    
+    public String corregirPath(String nombreRecurso) throws URISyntaxException {
+        String path = this.getClass().getClassLoader().getResource(nombreRecurso)
+                .toURI().toString();
+        if (SystemUtils.IS_OS_WINDOWS) {
+            return path.substring(6);
+        }
+        return path.substring(5);
+    }
+
+    /**
+     * Test of main method, of class Principal.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testMain() throws Exception {
+        String data = corregirPath("archivoConUnaClase.txt");
+        String[] args = null;
+        final InputStream original = System.in;
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        Principal.main(args);
+        System.setIn(original);
+    }
+    
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.edu.udea.pruebas_ps1.util;
+
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.SystemUtils;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ * Clase que contienen los casos de prueba para ArchivoIO
+ * @author Jhonatan Orozco Blandón
+ * @date 2017/21/08
+ * @version 1
+ */
+public class ArchivoIOTest {
+
+    private ArchivoIO archivoIO;
+
+    @Before
+    public void inicializar() {
+        archivoIO = new ArchivoIO();
+    }
+
+    /**
+     * Método para obtener el la ruta de recurso que se quiere encontrar,
+     * dependiendo del sistema operativo donde se despliegue el programa.
+     *
+     * @param nombreRecurso El nombre del recurso
+     * @return La ruta modificada de acuerdo al sistem operativo
+     * @throws URISyntaxException
+     */
+    public String corregirPath(String nombreRecurso) throws URISyntaxException {
+        String ruta = this.getClass().getClassLoader().getResource(nombreRecurso)
+                .toURI().toString();
+        if (SystemUtils.IS_OS_WINDOWS) {
+            return ruta.substring(6);
+        }
+        return ruta.substring(5);
+    }
+
+    /**
+     * Prueba para abrir un archivo existente.
+     *
+     * @throws URISyntaxException
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1
+     */
+    @Test
+    public void testArchivoExistente() throws URISyntaxException,
+            FileNotFoundException, ValidacionPS1 {
+        String ruta = corregirPath("prueba.txt");
+        File f = archivoIO.encontrarArchivo(ruta);
+        assertTrue(f.exists());
+    }
+
+    /**
+     * Prueba para abrir un archivo inexistente.
+     *
+     * @throws ValidacionPS1
+     * @throws URISyntaxException
+     * @throws FileNotFoundException
+     */
+    @Test(expected = FileNotFoundException.class)
+    public void testArchivoInexistente() throws
+            ValidacionPS1, URISyntaxException, FileNotFoundException {
+        String ruta = "esteArchivoNoExiste.xls";
+        File f = archivoIO.encontrarArchivo(ruta);
+    }
+
+    /**
+     * Prueba para abrir un archivo con la extensión .txt
+     *
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1
+     * @throws URISyntaxException
+     */
+    @Test
+    public void testAbrirArchivotxt() throws FileNotFoundException,
+            ValidacionPS1, URISyntaxException {
+        String ruta = corregirPath("prueba.txt");
+        File f = archivoIO.encontrarArchivo(ruta);
+        String ext = FilenameUtils.getExtension(f.getName());
+        assertArrayEquals("txt".toCharArray(), ext.toCharArray());
+    }
+
+    /**
+     * Prueba para abrir un archivo distinto a .txt. Se espera una excepción
+     * cuando esto ocurra.
+     *
+     * @throws FileNotFoundException
+     * @throws ValidacionPS1
+     * @throws java.net.URISyntaxException
+     */
+    @Test(expected = ValidacionPS1.class)
+    public void testAbrirArchivoDistintotAtxt() throws FileNotFoundException,
+            ValidacionPS1, URISyntaxException {
+        String ruta = corregirPath("prueba.docx");
+        archivoIO.encontrarArchivo(ruta);
+    }
+
+    /**
+     * Prueba para leer la primera línea del archivo
+     *
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException
+     */
+    @Test
+    public void testLeerCantidadLineas() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ruta = corregirPath("claseNormal.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(15, resultado.get(0).getNumeroLineas());
+    }
+    
+    /**
+     * Prueba para leer la primera línea del archivo
+     *
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException
+     */
+    @Test
+    public void testLeerCantidadTotalMetodos() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ruta = corregirPath("archivoConMultipleClasesMetodos.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(6, resultado.get(0).getNumeroMetodos()+resultado.get(1).getNumeroMetodos());
+    }
+
+    /**
+     * Prueba para leer clase con métodos
+     *
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException
+     */
+    @Test
+    public void testLeerClaseConMetodos() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ruta = corregirPath("claseConMetodos.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(1, resultado.get(0).getNumeroMetodos());
+    }
+    
+    /**
+     * Prueba para leer clase con métodos
+     *
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException
+     */
+    @Test
+    public void testLeerClaseConMultipleMetodos() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ruta = corregirPath("ClaseConMetodosMultiples.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(5, resultado.get(0).getNumeroMetodos());
+    }
+
+    /**
+     * Prueba para leer un archivo que tiene múltiples líneas ycon la inclusión
+     * de líneas en blanco.Se espera con esta prueba que el programa omita las
+     * lineas en blanco.
+     *
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException
+     */
+    @Test
+    public void testArchivoConMultipleClases() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ruta = corregirPath("archivoConMultiplesClases.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(3, resultado.size());
+    }
+
+    /**
+     * Prueba para escribir el LOC de una clase en el archivo de Excel
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws URISyntaxException 
+     */
+    @Test
+    public void testEscribirClaseLOCEnExcel() throws IOException,
+            FileNotFoundException, URISyntaxException {
+        ClaseLOC clase = new ClaseLOC();
+        clase.setNombre("Clase A");
+        clase.setNumeroMetodos(2);
+        clase.setNumeroLineas(20);
+        ArrayList<ClaseLOC> clases = new ArrayList();
+        clases.add(clase);
+        File f = archivoIO.escribirResultadosPrograma(clases);
+        assertTrue(f.exists());
+    }
+    
+    /**
+     * Prueba para escribir el LOC de múltiples clases en el archivo de excel.
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws URISyntaxException 
+     */
+    @Test
+    public void testEscribirResultadosProgramaLOC() throws IOException,
+            FileNotFoundException, URISyntaxException {
+        ClaseLOC clase = new ClaseLOC();
+        ArrayList<ClaseLOC> clases = new ArrayList();
+        clase.setNombre("Clase A");
+        clase.setNumeroMetodos(2);
+        clase.setNumeroLineas(23);
+        clases.add(clase);
+
+        clase = new ClaseLOC();
+        clase.setNombre("Clase B");
+        clase.setNumeroMetodos(4);
+        clase.setNumeroLineas(38);
+        clases.add(clase);
+        
+        clase = new ClaseLOC();
+        clase.setNombre("Clase C");
+        clase.setNumeroMetodos(3);
+        clase.setNumeroLineas(44);
+        clases.add(clase);
+        
+        File f = archivoIO.escribirResultadosPrograma(clases);
+        assertTrue(f.exists());
+    }
+
+}
+
