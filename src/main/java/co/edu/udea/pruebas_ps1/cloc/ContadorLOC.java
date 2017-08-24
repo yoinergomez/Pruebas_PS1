@@ -31,6 +31,9 @@ public class ContadorLOC {
      */
     public ClaseLOC comprobarClase(String linea) {
         ClaseLOC loc = null;
+        if(linea.startsWith("@")){
+            return loc;
+        }
         String aux[] = linea.split(" ");
         int ubicacion;   
         if (aux[0].equals("class")) {

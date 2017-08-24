@@ -77,12 +77,11 @@ public class ArchivoIO {
      * @throws ValidacionPS1
      * @throws IOException 
      */
-    public ArrayList<ClaseLOC> leerArchivo(String rutaArchivo) 
+    public ArrayList<ClaseLOC> leerArchivo(String rutaArchivo)
             throws FileNotFoundException, ValidacionPS1, IOException {
-        
         DetectorCasosEspeciales casoEspecial = new DetectorCasosEspeciales();
         ArrayList<ClaseLOC> clases = new ArrayList<>();
-        ContadorLOC loc = new ContadorLOC(); 
+        ContadorLOC loc = new ContadorLOC();
         File archivo = encontrarArchivo(rutaArchivo);
         FileReader f = new FileReader(archivo);
         BufferedReader b = new BufferedReader(f);
@@ -103,7 +102,7 @@ public class ArchivoIO {
                 if(!linea.equals("...")){
                     if(loc.esInicioClase(linea)){
                         System.out.println("1");
-                        if(actual != null){
+                        if (actual != null) {
                             System.out.println("2");
                             actual.setNumeroLineas(numeroLineas);
                             clases.add(actual);
@@ -112,37 +111,41 @@ public class ArchivoIO {
                         actual = new ClaseLOC();
                         numeroLineas++;
                         bandera = true;
-                    }else{
+                    } else {
                         actual = loc.comprobarClase(linea);
-                        if(actual != null){
+                        if (actual != null) {
                             System.out.println("3");
                             numeroLineas++;
                             bandera = true;
-                        }
-                        if(loc.comprobarMetodo(linea)){
-                            System.out.println("4");
-                            if(actual != null){
-                                System.out.println("5");
-                                actual.setNumeroMetodos(actual.getNumeroMetodos() + 1);
-                                numeroLineas++;
-                                bandera = true;
-                            }
-                        }
-                        aux = casoEspecial.detectarInstruccionFor(linea);
-                        if(aux != 0){
-                            System.out.println("6");
-                            numeroLineas = numeroLineas + aux;
-                            bandera = true;
-                        }else{
-                            aux = casoEspecial.detectarMultipleCreacionVariables(linea);
-                            if(aux != 0){
-                                System.out.println("7");
-                                numeroLineas = numeroLineas + aux;
-                                bandera = true;
+                        } else {
+                            if (loc.comprobarMetodo(linea)) {
+                                System.out.println("4");
+                                if (actual != null) {
+                                    System.out.println("5");
+                                    actual.setNumeroMetodos(
+                                            actual.getNumeroMetodos() + 1);
+                                    numeroLineas++;
+                                    bandera = true;
+                                }
+                            } else {
+                                aux = casoEspecial.detectarInstruccionFor(linea);
+                                if (aux != 0) {
+                                    System.out.println("6");
+                                    numeroLineas = numeroLineas + aux;
+                                    bandera = true;
+                                } else {
+                                    aux = casoEspecial.
+                                            detectarMultipleCreacionVariables(linea);
+                                    if (aux != 0) {
+                                        System.out.println("7");
+                                        numeroLineas = numeroLineas + aux;
+                                        bandera = true;
+                                    }
+                                }
                             }
                         }
                     }
-                    if(!bandera){
+                    if (!bandera) {
                         System.out.println("8");
                         numeroLineas++;
                     }
@@ -150,15 +153,15 @@ public class ArchivoIO {
                 }
                 System.out.println("---");
             }
-        } 
+        }
         b.close();
-        if(clases.isEmpty()){
-            if(actual != null){
+        if (clases.isEmpty()) {
+            if (actual != null) {
                 actual.setNumeroLineas(numeroLineas);
                 clases.add(actual);
-            }else{
+            } else {
                 return null;
-            }  
+            }
         }
         return clases;
     }
