@@ -1,0 +1,48 @@
+package co.edu.udea.pruebas_ps1.cloc;
+
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.Before;
+
+/**
+ * Es la clase que contiene las pruebas unitarias para la clase ContadorLOC.java
+ *
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/19
+ * @version v1
+ */
+public class ContadorLOCTest {
+
+}
+
+package co.edu.udea.pruebas_ps1.mio;
+
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.Before;
+
+/**
+ * Es la clase que contiene las pruebas unitarias para la clase ContadorLOC.java
+ *
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/19
+ * @version v1
+ */
+public class Ejemplo {
+
+}
+
+package co.edu.udea.pruebas_ps1.modelo;
+
+/**
+ * Almacena la cantidad de linea de código, cantidad de métodos y el nombre 
+ * de una clase
+ * @author Frank Castrillón - castrillonfrank114@gmail.com
+ * @date 2017/08/19
+ * @version v1
+ */
+public class ClaseLOC {
+
+}

@@ -5,6 +5,8 @@
  */
 package co.edu.udea.pruebas_ps1.util;
 
+import co.edu.udea.pruebas_ps1.cloc.ContadorLOC;
+import co.edu.udea.pruebas_ps1.cloc.DetectorCasosEspeciales;
 import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,12 +47,13 @@ public class ArchivoIO {
     private int numeroLineas;
 
     /**
-     * Método que encuentra el archivo buscado por medio de la ruta y que 
+     * Método que encuentra el archivo buscado por medio de la ruta y que
      * verifica que la extensión sea .txt
+     *
      * @param rutaArchivo
      * @return
      * @throws FileNotFoundException
-     * @throws ValidacionPS1 
+     * @throws ValidacionPS1
      */
     public File encontrarArchivo(String rutaArchivo) throws FileNotFoundException,
             ValidacionPS1 {
@@ -69,36 +72,107 @@ public class ArchivoIO {
 
     /**
      * Método que lee los datos de archivo que se ingresa por medio de la ruta
+     *
      * @param rutaArchivo
      * @return EL texto que se encuentra en el archivo
      * @throws FileNotFoundException
      * @throws ValidacionPS1
-     * @throws IOException 
+     * @throws IOException
      */
-    public String leerArchivo(String rutaArchivo) throws FileNotFoundException,
-            ValidacionPS1, IOException {
-        String cadena;
-        String textoArchivo = "";
-        numeroLineas = 0;
+    public ArrayList<ClaseLOC> leerArchivo(String rutaArchivo)
+            throws FileNotFoundException, ValidacionPS1, IOException {
+        DetectorCasosEspeciales casoEspecial = new DetectorCasosEspeciales();
+        ArrayList<ClaseLOC> clases = new ArrayList<>();
+        ContadorLOC loc = new ContadorLOC();
         File archivo = encontrarArchivo(rutaArchivo);
         FileReader f = new FileReader(archivo);
         BufferedReader b = new BufferedReader(f);
+        String textoArchivo = "";
+        ClaseLOC actual = null;
+        ClaseLOC auxiliar = null;
+        numeroLineas = 0;
+        String cadena;
+        String linea;
+        int aux = 0;
+        boolean bandera;
         while ((cadena = b.readLine()) != null) {
-            textoArchivo = textoArchivo.concat(cadena);
-            numeroLineas++;
+            bandera = false;
+            aux = 0;
+            //textoArchivo = textoArchivo.concat(cadena);
+            linea = loc.cargarInstruccion(cadena);
+            if (linea != null) {
+                if (!linea.equals("...")) {
+                    if (loc.esInicioClase(linea)) {
+                        if (actual != null) {
+                            actual.setNumeroLineas(numeroLineas);
+                            clases.add(actual);
+                            numeroLineas = 0;
+                        }
+                        actual = new ClaseLOC();
+                        numeroLineas++;
+                        bandera = true;
+                    } else {
+                        auxiliar = loc.comprobarClase(linea);
+                        if (auxiliar != null) {
+                            actual.setNombre(auxiliar.getNombre());
+                            actual.setNumeroLineas(auxiliar.getNumeroLineas());
+                            numeroLineas++;
+                            bandera = true;
+                        } else {
+                            if (loc.comprobarMetodo(linea)) {
+                                if (actual != null) {
+                                    actual.setNumeroMetodos(
+                                            actual.getNumeroMetodos() + 1);
+                                    numeroLineas++;
+                                    bandera = true;
+                                }
+                            } else {
+                                aux = casoEspecial.detectarInstruccionFor(linea);
+                                if (aux != 0) {
+                                    numeroLineas = numeroLineas + aux;
+                                    bandera = true;
+                                } else {
+                                    aux = casoEspecial.
+                                            detectarMultipleCreacionVariables(linea);
+                                    if (aux != 0) {
+                                        numeroLineas = numeroLineas + aux;
+                                        bandera = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!bandera) {
+                        numeroLineas++;
+                    }
+                }
+                textoArchivo = "";
+            }
         }
         b.close();
-        return textoArchivo;
+        if (clases.isEmpty()) {
+            if (actual != null) {
+                actual.setNumeroLineas(numeroLineas);
+                clases.add(actual);
+            } else {
+                return null;
+            }
+        } else if (actual != null) {
+            actual.setNumeroLineas(numeroLineas);
+            clases.add(actual);
+        }
+        return clases;
     }
 
     /**
      * Método que escribe en la hoja de Excel el objeto de la clase ClaseLOC
+     *
      * @param s
      * @param clase
      * @param numeroFilas
      * @throws FileNotFoundException
      * @throws IOException
-     * @throws URISyntaxException 
+     * @throws URISyntaxException
      */
     public void escribirResultadosClaseLOC(Sheet s, ClaseLOC clase, int numeroFilas)
             throws FileNotFoundException, IOException, URISyntaxException {
@@ -113,12 +187,13 @@ public class ArchivoIO {
         c = r.createCell(numeroCeldas);
         c.setCellValue(clase.getNumeroLineas());
     }
-    
+
     /**
      * Método que crea el encabezado en la hoja de Excel
-     * @param s 
+     *
+     * @param s
      */
-    private void crearEncabezadoExcel(Sheet s){
+    private void crearEncabezadoExcel(Sheet s) {
         int numeroCeldas = 0;
         Row r = s.createRow(0);
         Cell c = r.createCell(numeroCeldas);
@@ -134,15 +209,15 @@ public class ArchivoIO {
         c.setCellValue("Total");
     }
 
-    
     /**
-     * Método que escribe en la hoja de Excel la lista de objetos de tipo 
+     * Método que escribe en la hoja de Excel la lista de objetos de tipo
      * ClaseLOC
+     *
      * @param clases
      * @return
      * @throws IOException
      * @throws FileNotFoundException
-     * @throws URISyntaxException 
+     * @throws URISyntaxException
      */
     public File escribirResultadosPrograma(ArrayList<ClaseLOC> clases) throws
             IOException, FileNotFoundException, URISyntaxException {
@@ -157,7 +232,7 @@ public class ArchivoIO {
             totalLineas = totalLineas + clase.getNumeroLineas();
             escribirResultadosClaseLOC(s, clase, i + 1);
         }
-        Row r = s.createRow(numeroVariables+1);
+        Row r = s.createRow(numeroVariables + 1);
         Cell c = r.createCell(3);
         c.setCellValue(totalLineas);
         ajustarColumnasExcel(s);
@@ -174,13 +249,14 @@ public class ArchivoIO {
         File f = new File(rutaProyecto);
         return f;
     }
-    
+
     /**
      * Método que ajusta las columnas del Excel de acuerdo a lo longitud de las
      * palabras que se guardan en la hoja.
-     * @param s 
+     *
+     * @param s
      */
-    private void ajustarColumnasExcel(Sheet s){
+    private void ajustarColumnasExcel(Sheet s) {
         s.autoSizeColumn(0);
         s.autoSizeColumn(1);
         s.autoSizeColumn(2);

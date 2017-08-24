@@ -5,6 +5,10 @@
  */
 package co.edu.udea.pruebas_ps1.principal;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import org.apache.commons.lang.SystemUtils;
 import org.junit.Test;
 
 /**
@@ -18,6 +22,15 @@ public class PrincipalTest {
     
     public PrincipalTest() {
     }
+    
+    public String corregirPath(String nombreRecurso) throws URISyntaxException {
+        String path = this.getClass().getClassLoader().getResource(nombreRecurso)
+                .toURI().toString();
+        if (SystemUtils.IS_OS_WINDOWS) {
+            return path.substring(6);
+        }
+        return path.substring(5);
+    }
 
     /**
      * Test of main method, of class Principal.
@@ -25,9 +38,12 @@ public class PrincipalTest {
      */
     @Test
     public void testMain() throws Exception {
-        System.out.println("main");
-        String[] args = {"Rutas"};
+        String data = corregirPath("archivoConUnaClase.txt");
+        String[] args = null;
+        final InputStream original = System.in;
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
         Principal.main(args);
+        System.setIn(original);
     }
     
 }

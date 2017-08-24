@@ -23,48 +23,102 @@ public class ContadorLOCTest {
     public void setUp() {
         instancia = new ContadorLOC();
     }
-
+    
+    /**
+     *Pruebas para comprobar si una linea es el inicio de una clase (caso feliz)
+     */
+    @Test
+    public void testComprobarInicioClase() {
+        boolean resultado = instancia.esInicioClase("package "
+                + "co.edu.udea.pruebas_ps1.cloc;");
+        assertTrue(resultado);
+    }
+    
+    /**
+     *Pruebas para comprobar si una linea no es el inicio de una clase
+     */
+    @Test
+    public void testComprobarInicioClaseErronea() {
+        boolean resultado = instancia.esInicioClase("co.edu.udea.pruebas_ps1.cloc;");
+        assertFalse(resultado);
+    }
+    
+    /**
+     * Pruebas para comprobar si una linea es una clase (caso feliz)
+     */
     @Test
     public void testComprobarClase() {
         ClaseLOC loc = instancia.comprobarClase("public class Ejemplo");
         assertEquals("Ejemplo", loc.getNombre());
     }
-
+    
+    /**
+     * Pruebas para comprobar si una linea no es una clase
+     */
     @Test
     public void testComprobarClaseErronea() {
         ClaseLOC loc = instancia.comprobarClase("public static void Cuenta");
         assertEquals(null, loc);
     }
 
+    /**
+     * Prueba para comprobar una linea que es una clase pero no esta definido 
+     * el alcance
+     */
     @Test
     public void testComprobarClaseSinAlcance() {
         ClaseLOC loc = instancia.comprobarClase("class Cuenta");
         assertEquals("Cuenta", loc.getNombre());
     }
     
+    /**
+     * Comprobar cuando el nombre de una clase esta seguido de un abre corchete
+     */
+    @Test
+    public void testComprobarClaseConCorchete() {
+        ClaseLOC loc = instancia.comprobarClase("class Cuenta{");
+        assertEquals("Cuenta", loc.getNombre());
+    }
+    
+    /**
+     * Comprobar que el método guarde el número de lineas cuando detecta que 
+     * es una clase
+     */
     @Test
     public void testComprobarNumeroLineasClase() {
         ClaseLOC loc = instancia.comprobarClase("class Otro");
         assertEquals(1, loc.getNumeroLineas());
     }
-
+    
+    /**
+     * Comprueba si una linea es un método (caso feliz)
+     */
     @Test
     public void testComprobarMetodo() {
         assertTrue(instancia.comprobarMetodo("public static void hacerAlgo(){"));
     }
-
+    
+    /**
+     * Comprueba un método cuando hay espacios después del cierre del argumento
+     */
     @Test
     public void testComprobarMetodoConEspacios() {
         assertTrue(instancia.comprobarMetodo("public static void "
                 + "hacer(String tempo)   {"));
     }
-
+    
+    /**
+     * Comprueba un método que tiene throws
+     */
     @Test
     public void testComprobarMetodoConThrows() {
         assertTrue(instancia.comprobarMetodo("public void writeList()"
                 + "  throws IndexOutOfBoundsException, IOException   {"));
     }
 
+    /**
+     * Comprueba un método contruido erroneamente
+     */
     @Test
     public void testComprobarMetodoConMalThrows() {
         assertFalse(instancia.comprobarMetodo("public void writeList()"
