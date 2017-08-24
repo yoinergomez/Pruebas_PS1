@@ -94,9 +94,7 @@ public class ArchivoIO {
         String cadena;
         String linea;
         int aux = 0;
-        boolean bandera;
         while ((cadena = b.readLine()) != null) {
-            bandera = false;
             aux = 0;
             //textoArchivo = textoArchivo.concat(cadena);
             linea = loc.cargarInstruccion(cadena);
@@ -110,40 +108,32 @@ public class ArchivoIO {
                         }
                         actual = new ClaseLOC();
                         numeroLineas++;
-                        bandera = true;
                     } else {
                         auxiliar = loc.comprobarClase(linea);
                         if (auxiliar != null) {
                             actual.setNombre(auxiliar.getNombre());
                             actual.setNumeroLineas(auxiliar.getNumeroLineas());
                             numeroLineas++;
-                            bandera = true;
                         } else {
                             if (loc.comprobarMetodo(linea)) {
                                 if (actual != null) {
                                     actual.setNumeroMetodos(
                                             actual.getNumeroMetodos() + 1);
                                     numeroLineas++;
-                                    bandera = true;
                                 }
                             } else {
                                 aux = casoEspecial.detectarInstruccionFor(linea);
                                 if (aux != 0) {
                                     numeroLineas = numeroLineas + aux;
-                                    bandera = true;
                                 } else {
                                     aux = casoEspecial.
                                             detectarMultipleCreacionVariables(linea);
                                     if (aux != 0) {
                                         numeroLineas = numeroLineas + aux;
-                                        bandera = true;
                                     }
                                 }
                             }
                         }
-                    }
-                    if (!bandera) {
-                        numeroLineas++;
                     }
                 }
                 textoArchivo = "";
@@ -154,8 +144,6 @@ public class ArchivoIO {
             if (actual != null) {
                 actual.setNumeroLineas(numeroLineas);
                 clases.add(actual);
-            } else {
-                return null;
             }
         } else if (actual != null) {
             actual.setNumeroLineas(numeroLineas);

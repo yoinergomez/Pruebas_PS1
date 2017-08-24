@@ -26,10 +26,9 @@ public class Principal {
      * @throws java.io.IOException
      * @throws co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1
      */
-    public static void main(String[] args) throws IOException, ValidacionPS1, URISyntaxException {
-       ArchivoIO archivo = new ArchivoIO();
-        try {
-            
+    public static void main(String[] args) throws IOException, ValidacionPS1, 
+            FileNotFoundException, URISyntaxException {
+            ArchivoIO archivo = new ArchivoIO();   
             InputStreamReader isr = new InputStreamReader(System.in);
             BufferedReader br = new BufferedReader(isr);
             System.out.println("Introduce el path del archivo de excel.");
@@ -45,28 +44,6 @@ public class Principal {
             //System.out.println("Revise los resultados en la ruta:" + f.getAbsolutePath());
             
             isr.close();
-            br.close();
-            
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } 
+            br.close();        
     }
-     /**
-     * Método para obtener el la ruta de recurso que se quiere encontrar,
-     * dependiendo del sistema operativo donde se despliegue el programa.
-     *
-     * @param nombreRecurso El nombre del recurso
-     * @return La ruta modificada de acuerdo al sistem operativo
-     * @throws URISyntaxException
-     */
-    public String corregirPath(String nombreRecurso) throws URISyntaxException {
-        String ruta = this.getClass().getClassLoader().getResource(nombreRecurso)
-                .toURI().toString();
-        if (SystemUtils.IS_OS_WINDOWS) {
-            return ruta.substring(6);
-        }
-        return ruta.substring(5);
-    }
-
-    
 }
