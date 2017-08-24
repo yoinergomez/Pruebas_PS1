@@ -5,6 +5,8 @@
  */
 package co.edu.udea.pruebas_ps1.util;
 
+import co.edu.udea.pruebas_ps1.cloc.ContadorLOC;
+import co.edu.udea.pruebas_ps1.cloc.DetectorCasosEspeciales;
 import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
 import java.io.BufferedReader;
 import java.io.File;
@@ -75,20 +77,90 @@ public class ArchivoIO {
      * @throws ValidacionPS1
      * @throws IOException 
      */
-    public String leerArchivo(String rutaArchivo) throws FileNotFoundException,
-            ValidacionPS1, IOException {
-        String cadena;
-        String textoArchivo = "";
-        numeroLineas = 0;
+    public ArrayList<ClaseLOC> leerArchivo(String rutaArchivo) 
+            throws FileNotFoundException, ValidacionPS1, IOException {
+        
+        DetectorCasosEspeciales casoEspecial = new DetectorCasosEspeciales();
+        ArrayList<ClaseLOC> clases = new ArrayList<>();
+        ContadorLOC loc = new ContadorLOC(); 
         File archivo = encontrarArchivo(rutaArchivo);
         FileReader f = new FileReader(archivo);
         BufferedReader b = new BufferedReader(f);
+        String textoArchivo = "";
+        ClaseLOC actual = null;
+        numeroLineas = 0;
+        String cadena;
+        String linea;
+        int aux = 0;
+        boolean bandera;
         while ((cadena = b.readLine()) != null) {
+            bandera = false;
+            aux = 0;
             textoArchivo = textoArchivo.concat(cadena);
-            numeroLineas++;
-        }
+            linea = loc.cargarInstruccion(textoArchivo);
+            if(linea != null){
+                System.out.println("Entre");
+                if(!linea.equals("...")){
+                    if(loc.esInicioClase(linea)){
+                        System.out.println("1");
+                        if(actual != null){
+                            System.out.println("2");
+                            actual.setNumeroLineas(numeroLineas);
+                            clases.add(actual);
+                            numeroLineas = 0;
+                        }
+                        actual = new ClaseLOC();
+                        numeroLineas++;
+                        bandera = true;
+                    }else{
+                        actual = loc.comprobarClase(linea);
+                        if(actual != null){
+                            System.out.println("3");
+                            numeroLineas++;
+                            bandera = true;
+                        }
+                        if(loc.comprobarMetodo(linea)){
+                            System.out.println("4");
+                            if(actual != null){
+                                System.out.println("5");
+                                actual.setNumeroMetodos(actual.getNumeroMetodos() + 1);
+                                numeroLineas++;
+                                bandera = true;
+                            }
+                        }
+                        aux = casoEspecial.detectarInstruccionFor(linea);
+                        if(aux != 0){
+                            System.out.println("6");
+                            numeroLineas = numeroLineas + aux;
+                            bandera = true;
+                        }else{
+                            aux = casoEspecial.detectarMultipleCreacionVariables(linea);
+                            if(aux != 0){
+                                System.out.println("7");
+                                numeroLineas = numeroLineas + aux;
+                                bandera = true;
+                            }
+                        }
+                    }
+                    if(!bandera){
+                        System.out.println("8");
+                        numeroLineas++;
+                    }
+                    textoArchivo = "";
+                }
+                System.out.println("---");
+            }
+        } 
         b.close();
-        return textoArchivo;
+        if(clases.isEmpty()){
+            if(actual != null){
+                actual.setNumeroLineas(numeroLineas);
+                clases.add(actual);
+            }else{
+                return null;
+            }  
+        }
+        return clases;
     }
 
     /**

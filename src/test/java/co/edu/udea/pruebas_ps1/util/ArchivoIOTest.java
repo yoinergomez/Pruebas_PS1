@@ -111,7 +111,7 @@ public class ArchivoIOTest {
     }
 
     /**
-     * Prueba para leer laprimera línea del archivo
+     * Prueba para leer la primera línea del archivo
      *
      * @throws URISyntaxException
      * @throws ValidacionPS1
@@ -120,10 +120,9 @@ public class ArchivoIOTest {
     @Test
     public void testLeerPrimeraLinea() throws URISyntaxException,
             ValidacionPS1, IOException {
-        String ejemplo = "Primera linea";
-        String ruta = corregirPath("archivoConUnaLinea.txt");
-        String resultado = archivoIO.leerArchivo(ruta);
-        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
+        String ruta = corregirPath("archivoConUnaClase.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(4, resultado.get(0).getNumeroLineas());
 
     }
 
@@ -135,12 +134,11 @@ public class ArchivoIOTest {
      * @throws IOException
      */
     @Test
-    public void testLeerMultiplesLineas() throws URISyntaxException,
+    public void testLeerMultiplesClases() throws URISyntaxException,
             ValidacionPS1, IOException {
-        String ejemplo = "Primera linea-Segunda linea-Tercera linea";
-        String ruta = corregirPath("archivoConMultiplesLineas.txt");
-        String resultado = archivoIO.leerArchivo(ruta);
-        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
+        String ruta = corregirPath("archivoConMultiplesClases.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(2, resultado.size());
     }
 
     /**
@@ -152,14 +150,14 @@ public class ArchivoIOTest {
      * @throws ValidacionPS1
      * @throws IOException
      */
-    @Test
-    public void testLeerDatosConLineasEnBlanco() throws URISyntaxException,
-            ValidacionPS1, IOException {
-        String ejemplo = "Primera linea-Segunda linea-Tercera linea";
-        String ruta = corregirPath("archivoConMultiplesLineas.txt");
-        String resultado = archivoIO.leerArchivo(ruta);
-        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
-    }
+//    @Test
+//    public void testLeerDatosConLineasEnBlanco() throws URISyntaxException,
+//            ValidacionPS1, IOException {
+//        String ejemplo = "Primera linea-Segunda linea-Tercera linea";
+//        String ruta = corregirPath("archivoConMultiplesLineas.txt");
+//        String resultado = archivoIO.leerArchivo(ruta);
+//        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
+//    }
 
     /**
      * Prueba para escribir el LOC de una clase en el archivo de Excel

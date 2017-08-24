@@ -1,0 +1,8 @@
+package co.edu.udea.pruebas_ps1.util;
+
+import co.edu.udea.pruebas_ps1.modelo.ClaseLOC;
+import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
+
+public class ArchivoIOTest {
+
+}

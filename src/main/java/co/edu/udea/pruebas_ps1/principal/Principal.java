@@ -3,11 +3,9 @@ package co.edu.udea.pruebas_ps1.principal;
 import co.edu.udea.pruebas_ps1.util.ArchivoIO;
 import co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  * Es la clase principal que se encarga de ejecutar el proyecto.
@@ -23,7 +21,6 @@ public class Principal {
      */
     public static void main(String[] args) throws IOException, ValidacionPS1 {
        ArchivoIO archivo = new ArchivoIO();
-
         try {
             
             InputStreamReader isr = new InputStreamReader(System.in);

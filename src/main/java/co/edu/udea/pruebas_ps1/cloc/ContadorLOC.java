@@ -32,12 +32,31 @@ public class ContadorLOC {
     public ClaseLOC comprobarClase(String linea) {
         ClaseLOC loc = null;
         String aux[] = linea.split(" ");
+        int ubicacion;   
         if (aux[0].equals("class")) {
+            ubicacion = aux[1].indexOf("{");
+            if(ubicacion != -1){
+                aux[1] = aux[1].substring(0, ubicacion);
+            }
             loc = new ClaseLOC(aux[1], 1, 0);
         } else if (aux[1].equals("class")) {
+            ubicacion = aux[1].indexOf("{");
+            if(ubicacion != -1){
+                aux[2] = aux[2].substring(0, ubicacion);
+            }
             loc = new ClaseLOC(aux[2], 1, 0);
         }
         return loc;
+    }
+    
+    /**
+     * Método para saber si una linea es el inicio de una clase
+     * @param linea
+     * @return true si es el inicio y false en caso contrario
+     */
+    public boolean esInicioClase(String linea){
+        String aux[] = linea.split(" ");
+        return aux[0].equals("package");
     }
 
     /**
