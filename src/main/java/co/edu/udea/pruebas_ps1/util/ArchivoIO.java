@@ -96,10 +96,10 @@ public class ArchivoIO {
         while ((cadena = b.readLine()) != null) {
             bandera = false;
             aux = 0;
-            textoArchivo = textoArchivo.concat(cadena);
-            linea = loc.cargarInstruccion(textoArchivo);
+            //textoArchivo = textoArchivo.concat(cadena);
+            linea = loc.cargarInstruccion(cadena);
             if(linea != null){
-                System.out.println("Entre");
+                System.out.println("Entre\t"+linea);
                 if(!linea.equals("...")){
                     if(loc.esInicioClase(linea)){
                         System.out.println("1");

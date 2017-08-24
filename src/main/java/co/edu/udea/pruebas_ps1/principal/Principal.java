@@ -18,6 +18,8 @@ public class Principal {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
+     * @throws co.edu.udea.pruebas_ps1.util.excepcion.ValidacionPS1
      */
     public static void main(String[] args) throws IOException, ValidacionPS1 {
        ArchivoIO archivo = new ArchivoIO();
@@ -29,8 +31,8 @@ public class Principal {
             System.out.println("ejemplo: C:\\Users\\Laptop\\Downloads\\archivo.xls: ");
             System.out.println("path: ");
             
-            //String path = br.readLine();
-            //archivo.leerArchivo(path);
+            String path = br.readLine();
+            archivo.leerArchivo(path);
             
             //System.out.println("Revise los resultados en la ruta:" + f.getAbsolutePath());
             
