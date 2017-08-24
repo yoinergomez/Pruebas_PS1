@@ -38,6 +38,7 @@ public class PrincipalTest {
      */
     @Test
     public void testMain() throws Exception {
+        Principal p = new Principal();
         String data = corregirPath("archivoConUnaClase.txt");
         String[] args = null;
         final InputStream original = System.in;

@@ -35,6 +35,15 @@ public class DetectorCasosEspecialesTest {
         assertEquals(3,numeroInstrucciones );
     }
     
+     /**
+     * Prueba de una línea de código que contiene texto entre comillas
+     */
+    @Test
+    public void testDetectarTextoEntreComillas(){
+        String linea="\"Soy un comentario\"";
+        int numeroInstrucciones=detector.detectarMultipleCreacionVariables(linea);
+        assertEquals(0, numeroInstrucciones );
+    }
     
     /**
      * Prueba de una línea de código que inicializa una variable por medio de 
