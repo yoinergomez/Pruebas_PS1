@@ -23,41 +23,55 @@ public class ContadorLOC {
      * @param linea a comprobar
      * @return true si es una clase o false en otro caso
      */
-    
     /**
-     * 
+     *
      * @param linea
-     * @return 
+     * @return
      */
     public ClaseLOC comprobarClase(String linea) {
         ClaseLOC loc = null;
-        if(linea.startsWith("@")){
-            return loc;
-        }
-        String aux[] = linea.split(" ");
-        int ubicacion;   
-        if (aux[0].equals("class")) {
-            ubicacion = aux[1].indexOf("{");
-            if(ubicacion != -1){
-                aux[1] = aux[1].substring(0, ubicacion);
+//        if(linea.startsWith("@")){
+//            return loc;
+//        }
+//        String aux[] = linea.split(" ");
+//        int ubicacion;   
+//        if (aux[0].equals("class")) {
+//            ubicacion = aux[1].indexOf("{");
+//            if(ubicacion != -1){
+//                aux[1] = aux[1].substring(0, ubicacion);
+//            }
+//            loc = new ClaseLOC(aux[1], 1, 0);
+//        } else if (aux[1].equals("class")) {
+//            ubicacion = aux[1].indexOf("{");
+//            if(ubicacion != -1){
+//                aux[2] = aux[2].substring(0, ubicacion);
+//            }
+//            loc = new ClaseLOC(aux[2], 1, 0);
+//        }
+        String str = linea;
+        int indexClass = str.indexOf("class ");
+        if (indexClass != -1) {
+            int inicioNombreClase = indexClass + 6;
+            int finNombreClase = str.length();
+            if (str.indexOf(" ", inicioNombreClase) != -1) {
+                finNombreClase = str.indexOf(" ", inicioNombreClase);
             }
-            loc = new ClaseLOC(aux[1], 1, 0);
-        } else if (aux[1].equals("class")) {
-            ubicacion = aux[1].indexOf("{");
-            if(ubicacion != -1){
-                aux[2] = aux[2].substring(0, ubicacion);
+            str = str.substring(inicioNombreClase, finNombreClase);
+            if (str.endsWith("{")) { // Eliminar el caracter si NombreClase{
+                str = str.substring(0, str.length() - 1);
             }
-            loc = new ClaseLOC(aux[2], 1, 0);
+            loc = new ClaseLOC(str, 1, 0);
         }
         return loc;
     }
-    
+
     /**
      * Método para saber si una linea es el inicio de una clase
+     *
      * @param linea
      * @return true si es el inicio y false en caso contrario
      */
-    public boolean esInicioClase(String linea){
+    public boolean esInicioClase(String linea) {
         String aux[] = linea.split(" ");
         return aux[0].equals("package");
     }
@@ -147,11 +161,12 @@ public class ContadorLOC {
     }
 
     /**
-     * Retorna toda una sentencia en una sola fila, si el argumento no es 
-     * una sentencia completa la función retorna "..." lo que indica que debe
+     * Retorna toda una sentencia en una sola fila, si el argumento no es una
+     * sentencia completa la función retorna "..." lo que indica que debe
      * ingresarse una nueva línea
+     *
      * @param linea
-     * @return 
+     * @return
      */
     public String cargarInstruccion(String linea) {
         linea = linea.trim();
@@ -164,7 +179,7 @@ public class ContadorLOC {
         if (esCierreSentencia(linea)) {
             return null;
         }
-        if(linea.startsWith("@")){
+        if (linea.startsWith("@")) {
             return linea;
         }
         if (!esFinalInstruccion(linea)) {

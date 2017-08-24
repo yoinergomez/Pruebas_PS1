@@ -28,18 +28,26 @@ public class DetectorCasosEspeciales {
         int numeroCaracteres = linea.length();
         int instrucciones = 0;
         Stack<Character> pila = new Stack<>();
+        boolean textoEntreComillas=false;
         for (int i = 0; i < numeroCaracteres; i++) {
             char caracter = linea.charAt(i);
             switch (caracter) {
+                case '"':
+                    textoEntreComillas=!textoEntreComillas;
+                    break;
                 case '(':
                 case '{':
                 case '[':
-                    pila.push(caracter);
+                    if(!textoEntreComillas){
+                        pila.push(caracter);
+                    } 
                     break;
                 case ')':
                 case '}':
                 case ']':
-                    pila.pop();
+                    if(!textoEntreComillas){
+                        pila.pop();
+                    }
                     break;
                 case ',':
                 case ';':

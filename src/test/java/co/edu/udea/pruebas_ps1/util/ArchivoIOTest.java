@@ -117,14 +117,28 @@ public class ArchivoIOTest {
      * @throws ValidacionPS1
      * @throws IOException
      */
-//    @Test
-//    public void testLeerPrimeraLinea() throws URISyntaxException,
-//            ValidacionPS1, IOException {
-//        String ruta = corregirPath("archivoConUnaClase.txt");
-//        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
-//        assertEquals(4, resultado.get(0).getNumeroLineas());
-//
-//    }
+    @Test
+    public void testLeerCantidadLineas() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ruta = corregirPath("claseNormal.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(15, resultado.get(0).getNumeroLineas());
+    }
+    
+    /**
+     * Prueba para leer la primera línea del archivo
+     *
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException
+     */
+    @Test
+    public void testLeerCantidadTotalMetodos() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ruta = corregirPath("archivoConMultipleClasesMetodos.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(6, resultado.get(0).getNumeroMetodos()+resultado.get(1).getNumeroMetodos());
+    }
 
     /**
      * Prueba para leer clase con métodos
@@ -140,6 +154,21 @@ public class ArchivoIOTest {
         ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
         assertEquals(1, resultado.get(0).getNumeroMetodos());
     }
+    
+    /**
+     * Prueba para leer clase con métodos
+     *
+     * @throws URISyntaxException
+     * @throws ValidacionPS1
+     * @throws IOException
+     */
+    @Test
+    public void testLeerClaseConMultipleMetodos() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ruta = corregirPath("ClaseConMetodosMultiples.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(5, resultado.get(0).getNumeroMetodos());
+    }
 
     /**
      * Prueba para leer un archivo que tiene múltiples líneas ycon la inclusión
@@ -150,14 +179,13 @@ public class ArchivoIOTest {
      * @throws ValidacionPS1
      * @throws IOException
      */
-//    @Test
-//    public void testLeerDatosConLineasEnBlanco() throws URISyntaxException,
-//            ValidacionPS1, IOException {
-//        String ejemplo = "Primera linea-Segunda linea-Tercera linea";
-//        String ruta = corregirPath("archivoConMultiplesLineas.txt");
-//        String resultado = archivoIO.leerArchivo(ruta);
-//        assertArrayEquals(ejemplo.toCharArray(), resultado.toCharArray());
-//    }
+    @Test
+    public void testArchivoConMultipleClases() throws URISyntaxException,
+            ValidacionPS1, IOException {
+        String ruta = corregirPath("archivoConMultiplesClases.txt");
+        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+        assertEquals(3, resultado.size());
+    }
 
     /**
      * Prueba para escribir el LOC de una clase en el archivo de Excel
