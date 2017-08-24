@@ -117,28 +117,28 @@ public class ArchivoIOTest {
      * @throws ValidacionPS1
      * @throws IOException
      */
-    @Test
-    public void testLeerPrimeraLinea() throws URISyntaxException,
-            ValidacionPS1, IOException {
-        String ruta = corregirPath("archivoConUnaClase.txt");
-        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
-        assertEquals(4, resultado.get(0).getNumeroLineas());
-
-    }
+//    @Test
+//    public void testLeerPrimeraLinea() throws URISyntaxException,
+//            ValidacionPS1, IOException {
+//        String ruta = corregirPath("archivoConUnaClase.txt");
+//        ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
+//        assertEquals(4, resultado.get(0).getNumeroLineas());
+//
+//    }
 
     /**
-     * Prueba para leer un archivo que tiene múltiples lineas
+     * Prueba para leer clase con métodos
      *
      * @throws URISyntaxException
      * @throws ValidacionPS1
      * @throws IOException
      */
     @Test
-    public void testLeerMultiplesClases() throws URISyntaxException,
+    public void testLeerClaseConMetodos() throws URISyntaxException,
             ValidacionPS1, IOException {
-        String ruta = corregirPath("archivoConMultiplesClases.txt");
+        String ruta = corregirPath("claseConMetodos.txt");
         ArrayList<ClaseLOC> resultado = archivoIO.leerArchivo(ruta);
-        assertEquals(2, resultado.size());
+        assertEquals(1, resultado.get(0).getNumeroMetodos());
     }
 
     /**
