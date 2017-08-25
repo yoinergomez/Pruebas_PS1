@@ -27,28 +27,29 @@ Posteriormente, se establece un estandar de códificación que nos permite abord
 ## Herramientas utilizadas
 - Trello  [![Plus for Trello]()](https://chrome.google.com/webstore/search/Plus%20for%20trello)
 
-Para poder medir el tiempo que se requirio en el desarrollo de una tarea en especifico, se utilizo el plugin del navegador Chrome llamado "Plus for Trello" que permite iniciar un cronometro con el objetivo de saber exactamente cuanto se tardo en completarla y automaticamente asignar ese tiempo en BackLog de Trello.
+Para poder medir el tiempo que se requirió en el desarrollo de una tarea en específico, se utilizó el plugin del navegador Chrome llamado "Plus for Trello" que permite iniciar un cronometro con el objetivo de saber exactamente cuánto se tardó en completarla y automáticamente asignar ese tiempo en BackLog de Trello.
 
 También contiene una sección de reportes que permite ver el historial completo de las modificaciones realizadas sobre las tareas establecidas.
 - WakaTime [![WakaTime]()](https://wakatime.com/login)
 
-Es un plugin que se integra con el proyecto de GitHub y permite establecer metricas tales como el tiempo en que se estuvo desarrollando en el IDE de NetBeans, el porcentaje de lenguajes de programación utiilizados.
+Es un plugin que se integra con el proyecto de GitHub y permite establecer métricas tales como el tiempo en que se estuvo desarrollando en el IDE de NetBeans, el porcentaje de lenguajes de programación utilizados.
 
-     - Nota:  Para poder utilizar la herramienta es necesario que se dirija a la pagina de WakaTime, e ingrese con la cuenta de GitHub y em la sección "Supported IDEs" selecciona el IDE de preferencia para nuestro caso sera Netbeans
+     - Nota:  Para poder utilizar la herramienta es necesario que se dirija a la página de WakaTime, e ingrese con la cuenta de GitHub y em la sección "Supported IDEs" selecciona el IDE de preferencia para nuestro hemos decidido utilizar Netbeans.
 
 ## Ejecución del proyecto
-Una vez clonado el projecto de GitHub se procede a abrirlo con el IDE de NetBeans
+Una vez clonado el prójecto de GitHub se procede a abrirlo con el IDE de NetBeans
 
-     - Nota: Debe verificar que NetBeans tenga instalado Maven para poder descargar las dependencias.
+     - Nota: Se debe verificar que NetBeans tenga instalado Maven para poder descargar las dependencias.
+     
+Luego se procede a darle click izquierdo sobre el proyecto y escoger la opción Build, con esto se procederá a que Maven descargue las dependencias necesarias para la ejecución del programa.
 
-Luego se procede a darle click izquierdo sobre el proyecto y escoger la opción Build, con esto se procedera a que Maven descargue las dependencias necesarias para la ejecución del programa.
+Una vez terminado el proceso anterior se procede a ejecutar el proyecto ya sea con la tecla f6 o directamente de la herramienta play ubicada en la ventana visual del IDE de NetBeans. 
 
-Una vez terminado el proceso anterior se procede a ejecutar el proyecto ya sea con la tecla f6 o directamente de la herramienta play ubicada en la ventana visual del IDE de NetBeans.
-Posteriormente se debera ingresar la ruta absoluta del archivo a leer.
+Posteriormente se deberá ingresar la ruta absoluta del archivo a leer.
 
      - Nota: Se debe asegurar que la extensión del archivo sea ".txt".
 
-Al finalizar el programa mostrara la ruta donde esta guardado el resultado de la ejecución del programa.
+Al finalizar el programa mostrara la ruta donde está guardado el resultado de la ejecución del programa.
 <div align="center">
     <img src="" >
 </div>
