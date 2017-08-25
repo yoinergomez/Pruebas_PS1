@@ -34,19 +34,19 @@ También contiene una sección de reportes que permite ver el historial completo
 
 Es un plugin que se integra con el proyecto de GitHub y permite establecer metricas tales como el tiempo en que se estuvo desarrollando en el IDE de NetBeans, el porcentaje de lenguajes de programación utiilizados.
 
-- Nota:  Para poder utilizar la herramienta es necesario que se dirija a la pagina de WakaTime, e ingrese con la cuenta de GitHub y em la sección "Supported IDEs" selecciona el IDE de preferencia para nuestro caso sera Netbeans
+     - Nota:  Para poder utilizar la herramienta es necesario que se dirija a la pagina de WakaTime, e ingrese con la cuenta de GitHub y em la sección "Supported IDEs" selecciona el IDE de preferencia para nuestro caso sera Netbeans
 
 ## Ejecución del proyecto
 Una vez clonado el projecto de GitHub se procede a abrirlo con el IDE de NetBeans
 
-- Nota: Debe verificar que NetBeans tenga instalado Maven para poder descargar las dependencias.
+     - Nota: Debe verificar que NetBeans tenga instalado Maven para poder descargar las dependencias.
 
 Luego se procede a darle click izquierdo sobre el proyecto y escoger la opción Build, con esto se procedera a que Maven descargue las dependencias necesarias para la ejecución del programa.
 
 Una vez terminado el proceso anterior se procede a ejecutar el proyecto ya sea con la tecla f6 o directamente de la herramienta play ubicada en la ventana visual del IDE de NetBeans.
 Posteriormente se debera ingresar la ruta absoluta del archivo a leer.
 
-- Nota: Se debe asegurar que la extensión del archivo sea ".txt".
+     - Nota: Se debe asegurar que la extensión del archivo sea ".txt".
 
 Al finalizar el programa mostrara la ruta donde esta guardado el resultado de la ejecución del programa.
 <div align="center">
