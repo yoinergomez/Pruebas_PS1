@@ -16,7 +16,13 @@ Todos los informes generados para este programa se encuentran en la [ carpeta do
 - [PIP (Retrospectiva)](https://github.com/yoinergomez/Pruebas_PS1/raw/master/doc/Retrospectiva.docx)
 
 ### Reporte de estimaciones de tareas
-El desarrollo del proyecto requirió una inversión de tiempo de 15 horas aproximadamente pero lo que había estimado el equipo fue un aproximado de 12 horas. De este modo tuvimos un desfase de 3 horas donde se justifica en [PIP (Retrospectiva).](https://github.com/yoinergomez/Pruebas_PS1/raw/master/doc/Retrospectiva.docx)    
+El desarrollo del proyecto requirió una inversión de tiempo de 15 horas aproximadamente pero lo que había estimado el equipo fue un aproximado de 12 horas. De este modo tuvimos un desfase de 3 horas donde se justifica en [PIP (Retrospectiva).](https://github.com/yoinergomez/Pruebas_PS1/raw/master/doc/Retrospectiva.docx)
+
+Estimación de cada tarea con su progreso en el transcurso del proyecto (unidad dada en horas).
+![chart01](https://image.ibb.co/f8kUE5/chart_1.png)  
+
+Estimación de cada tarea con su respectiva inversión de tiempo (unidad dada en horas).
+![chart02](https://image.ibb.co/e0rQnQ/chart_2.png)
   
 
 ## Metodología [![trello](https://img.shields.io/badge/trello-Pruebas__PS1-blue.svg)](https://trello.com/b/YSHHBdhP/pruebasps1)
