@@ -3,9 +3,21 @@
 Aplicación que cuenta la cantidad de líneas de código teniendo en cuenta un [estándar de conteo. (Ver estándar)](https://github.com/yoinergomez/Pruebas_PS1/blob/master/doc/Est%C3%A1ndar%20de%20conteo%20programa%20java.docx)
 
 ## Desarrolladores
-Jhonatan Alexánder Orozco Blandón.
-Frank Alexis Castrillón Giraldo.
+Jhonatan Alexánder Orozco Blandón.  
+Frank Alexis Castrillón Giraldo.  
 Yoiner Esteban Gómez Ayala.
+
+
+## Documentación
+Todos los informes generados para este programa se encuentran en la [ carpeta doc](https://github.com/yoinergomez/Pruebas_PS1/tree/master/doc) de este repositorio. Ahí se puede encontrar los siguientes archivos:
+
+- [Estándar de codificación](https://github.com/yoinergomez/Pruebas_PS1/raw/master/doc/Est%C3%A1ndar%20de%20codificaci%C3%B3n.docx)
+- [Estándar de conteo](https://github.com/yoinergomez/Pruebas_PS1/raw/master/doc/Est%C3%A1ndar%20de%20conteo%20programa%20java.docx)
+- [PIP (Retrospectiva)](https://github.com/yoinergomez/Pruebas_PS1/raw/master/doc/Retrospectiva.docx)
+
+### Reporte de estimaciones de tareas
+El desarrollo del proyecto requirió una inversión de tiempo de 15 horas aproximadamente pero lo que había estimado el equipo fue un aproximado de 12 horas. De este modo tuvimos un desfase de 3 horas donde se justifica en [PIP (Retrospectiva).](https://github.com/yoinergomez/Pruebas_PS1/raw/master/doc/Retrospectiva.docx)    
+  
 
 ## Metodología [![trello](https://img.shields.io/badge/trello-Pruebas__PS1-blue.svg)](https://trello.com/b/YSHHBdhP/pruebasps1)
 **- Análisis:** Los miembros del equipo comprendieron el documento donde se describía el problema y sus requerimientos, también se definieron las tecnologías, IDE de desarrollo, lenguaje de programación y tareas para realizar por cada integrante.
@@ -34,7 +46,7 @@ También contiene una sección de reportes que permite ver el historial completo
 
 Es un plugin que se integra con el proyecto de GitHub y permite establecer métricas tales como el tiempo en que se estuvo desarrollando en el IDE de NetBeans, el porcentaje de lenguajes de programación utilizados.
 
-     - Nota:  Para poder utilizar la herramienta es necesario que se dirija a la página de WakaTime, e ingrese con la cuenta de GitHub y em la sección "Supported IDEs" selecciona el IDE de preferencia para nuestro hemos decidido utilizar Netbeans.
+     - Nota:  Para poder utilizar la herramienta es necesario que se dirija a la página de WakaTime, e ingrese con la cuenta de GitHub y en la sección "Supported IDEs" selecciona el IDE de preferencia para nuestro hemos decidido utilizar Netbeans.
 
 ## Ejecución del proyecto
 Una vez clonado el prójecto de GitHub se procede a abrirlo con el IDE de NetBeans
@@ -50,6 +62,3 @@ Posteriormente se deberá ingresar la ruta absoluta del archivo a leer.
      - Nota: Se debe asegurar que la extensión del archivo sea ".txt".
 
 Al finalizar el programa mostrara la ruta donde está guardado el resultado de la ejecución del programa.
-<div align="center">
-    <img src="" >
-</div>
